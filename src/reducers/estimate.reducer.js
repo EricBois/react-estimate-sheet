@@ -1,9 +1,8 @@
-import { v4 as uuid } from 'uuid';
 
 const reducer = (state, action) => {
   switch(action.type){
     case "ADD":
-      return [...state, { id: uuid(), name: action.name, address: action.address }]
+      return [...state, { id: action.id, name: action.name, address: action.address }]
     // case "REMOVE":
     //   return state.filter((todo) => todo.id !== action.id)
     // case "TOGGLE":
