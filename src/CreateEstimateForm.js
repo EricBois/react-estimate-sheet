@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { v4 as uuid } from 'uuid';
 import useInputState from './hooks/useInputState';
-import { DispatchContext } from './context/estimate.context';
+import estimateReducer from './reducers/estimate.reducer';
+import useLocalStorageReducer from './hooks/useLocalStorageReducer';
 
 import { withStyles } from '@material-ui/styles';
 import styles from './styles/createEstimateStyles';
@@ -17,7 +18,7 @@ function CreateEstimateForm(props) {
   const [name, handleChangeName, resetName] = useInputState('');
   const [address, handleChangeAddress, resetAddress] = useInputState('');
 
-  const dispatch = useContext(DispatchContext);
+  const [dispatch] = useLocalStorageReducer("estimates", [], estimateReducer);
   const { classes } = props;
 
   const handleSubmit = async () => {

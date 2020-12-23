@@ -1,13 +1,17 @@
-import React, { useContext } from 'react'
-import NavBar from './NavBar';
+import React from 'react'
+import estimateReducer from './reducers/estimate.reducer';
+import useLocalStorageReducer from './hooks/useLocalStorageReducer';
 
-import {EstimateContext} from './context/estimate.context';
-
+import styles from './styles/estimatorStyles';
+import { withStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-function Estimator() {
-  const estimates = useContext(EstimateContext);
+
+
+function Estimator(props) {
+  const { classes } = props;
+  const [estimates] = useLocalStorageReducer("estimates", [], estimateReducer);
   return (
     <Paper
       style={{
@@ -17,11 +21,10 @@ function Estimator() {
         backgroundColor: '#fafafa',
       }}
     >
-      <NavBar />
       <Grid container justify="center">
         <Grid item xs={11} md={8} lg={4}>
           { estimates.map( estimate => (
-            <h1>{estimate.name}</h1>
+            <Paper className={classes.paper}>{estimate.name}</Paper>
           ))}
         </Grid>
         </Grid>
@@ -29,4 +32,4 @@ function Estimator() {
   )
 }
 
-export default Estimator;
+export default withStyles(styles)(Estimator);
