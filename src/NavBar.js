@@ -90,12 +90,12 @@ export default function PersistentDrawerLeft() {
     setOpen(false);
   };
 
-  const toggleDrawer = () => (event) => {
+  const toggleDrawer = (status) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
-    setOpen(false);
+    setOpen(status);
   };
 
   return (
@@ -140,7 +140,7 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
           
-            <ListItem button component={Link} to="/">
+            <ListItem onClick={toggleDrawer(false)} button component={Link} to="/">
               <ListItemIcon></ListItemIcon>
               <ListItemText primary="Estimates" />
             </ListItem>
@@ -148,7 +148,7 @@ export default function PersistentDrawerLeft() {
         </List>
         <Divider />
         <List>
-            <ListItem button component={Link} to="/create">
+            <ListItem onClick={toggleDrawer(false)} button component={Link} to="/create">
               <ListItemIcon></ListItemIcon>
               <ListItemText primary="Create" />
             </ListItem>
