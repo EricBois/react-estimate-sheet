@@ -1,6 +1,5 @@
 import React from 'react'
-import estimateReducer from './reducers/estimate.reducer';
-import useLocalStorageReducer from './hooks/useLocalStorageReducer';
+import { useHistory } from "react-router-dom";
 
 import styles from './styles/estimatorStyles';
 import { withStyles } from '@material-ui/styles';
@@ -11,7 +10,12 @@ import Grid from '@material-ui/core/Grid';
 
 function Estimator(props) {
   const { classes } = props;
-  const [estimates] = useLocalStorageReducer("estimates", [], estimateReducer);
+  const history = useHistory();
+
+  const handleClick = (id) => {
+    history.push(`/estimate/${id}`)
+  
+  }
   return (
     <Paper
       style={{
@@ -23,8 +27,8 @@ function Estimator(props) {
     >
       <Grid container justify="center">
         <Grid item xs={11} md={8} lg={4}>
-          { estimates.map( estimate => (
-            <Paper className={classes.paper}>{estimate.name}</Paper>
+          { props.estimates.map( estimate => (
+            <Paper onClick={() => handleClick(estimate.id)} className={classes.paper}>{estimate.name}</Paper>
           ))}
         </Grid>
         </Grid>
