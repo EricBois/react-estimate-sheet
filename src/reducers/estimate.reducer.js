@@ -4,10 +4,7 @@ const reducer = (state, action) => {
       return [
         ...state,
         {
-          id: action.id,
-          name: action.name,
-          address: action.address,
-          note: action.note,
+          ...action,
           measures: [],
         },
       ];

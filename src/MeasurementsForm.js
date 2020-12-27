@@ -28,10 +28,7 @@ function MeasurementsForm(props) {
   const handleSubmit = () => {
     dispatch({
       type: 'EDIT',
-      id: estimate.id,
-      name: estimate.name,
-      address: estimate.address,
-      note: estimate.note,
+      ...estimate,
       measures: { length, width },
     });
     resetLength();
