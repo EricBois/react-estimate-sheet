@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { v4 as uuid } from 'uuid';
 import useInputState from './hooks/useInputState';
 
@@ -16,14 +17,18 @@ import Button from '@material-ui/core/Button';
 function CreateEstimateForm(props) {
   const [name, handleChangeName, resetName] = useInputState('');
   const [address, handleChangeAddress, resetAddress] = useInputState('');
+  const [note, handleChangeNote, resetNote] = useInputState('');
 
   const { classes, dispatch } = props;
+  const history = useHistory();
+  const id = uuid()
 
-  const handleSubmit = async () => {
-    const id = uuid()
-    await dispatch({ type: 'ADD', name, address, id });
+  const handleSubmit = () => {
+    dispatch({ type: 'ADD', id, name, address, note });
     resetName();
     resetAddress();
+    resetNote();
+    history.push(`/estimate/${id}`)
   };
 
   return (
@@ -68,6 +73,8 @@ function CreateEstimateForm(props) {
           </Grid>
           <Grid item xs={12}>
             <TextareaAutosize
+            value={note}
+            onChange={handleChangeNote}
               className={classes.textArea}
               aria-label="minimum height"
               rowsMin={5}
