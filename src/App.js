@@ -14,13 +14,12 @@ function App() {
     estimateReducer
   );
 
-
   function findEstimate(id) {
     return estimates.find(function (estimate) {
       return estimate.id === id;
     });
   }
-  
+
   return (
     <Route path="/">
       <NavBar />
@@ -37,7 +36,16 @@ function App() {
           <Estimator estimates={estimates} />
         </Route>
 
-        <Route exact path="/estimate/:id" render={(routeProps) => <Estimate estimate={findEstimate(routeProps.match.params.id)} />}/>
+        <Route
+          exact
+          path="/estimate/:id"
+          render={(routeProps) => (
+            <Estimate
+              estimate={findEstimate(routeProps.match.params.id)}
+              dispatch={(props) => dispatch(props)}
+            />
+          )}
+        />
       </Switch>
     </Route>
   );
