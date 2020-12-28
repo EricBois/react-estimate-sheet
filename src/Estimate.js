@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import MeasurementsForm from './MeasurementsForm';
+import HoursForm from './HoursForm';
+import MaterialForm from './MaterialForm';
+import Result from './Result';
 
 import { withStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import BallotIcon from '@material-ui/icons/Ballot';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Grid from '@material-ui/core/Grid';
@@ -31,7 +34,11 @@ function Estimate(props) {
         aria-labelledby={`scrollable-auto-tab-${index}`}
         {...other}
       >
-        {value === index && <Box width="100%" p={1}>{children}</Box>}
+        {value === index && (
+          <Box className={classes.container} p={1}>
+            {children}
+          </Box>
+        )}
       </div>
     );
   }
@@ -49,22 +56,32 @@ function Estimate(props) {
             aria-label="icon label tabs example"
           >
             <Tab icon={<AssignmentIcon />} label="Measure" />
-            <Tab icon={<BallotIcon />} label="Hours" />
+            <Tab icon={<AccessTimeIcon />} label="Hours" />
             <Tab icon={<BallotIcon />} label="Material" />
             <Tab icon={<AssignmentTurnedInIcon />} label="Result" />
           </Tabs>
         </Paper>
+
         <TabPanel value={value} index={0}>
-          <MeasurementsForm estimate={estimate} dispatch={(props) => dispatch(props)} />
+          <MeasurementsForm
+            estimate={estimate}
+            dispatch={(props) => dispatch(props)}
+          />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item hours
+          <HoursForm
+            estimate={estimate}
+            dispatch={(props) => dispatch(props)}
+          />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Two
+          <MaterialForm
+            estimate={estimate}
+            dispatch={(props) => dispatch(props)}
+          />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          Item Thre
+          <Result estimate={estimate} />
         </TabPanel>
       </Grid>
     </Grid>
