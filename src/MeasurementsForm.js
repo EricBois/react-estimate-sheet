@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import LabelImportantIcon from '@material-ui/icons/LabelImportant';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -23,17 +24,16 @@ import styles from './styles/measurementsStyles';
 function MeasurementsForm(props) {
   const { classes, dispatch, estimate } = props;
 
-  const [length, handleChangeLength, resetLength] = useInputState('');
-  const [width, handleChangeWidth, resetWidth] = useInputState('');
+  const [roomLength, handleChangeLength, resetLength] = useInputState('');
+  const [sqfPrice, handleChangeSqfPrice, resetSqfPrice] = useInputState('0');
+  const [roomWidth, handleChangeWidth, resetWidth] = useInputState('');
 
-  const handleSubmit = () => {
-    dispatch({
-      type: 'EDIT',
-      ...estimate,
-      measures: { length, width },
+  const handleSubmitMeasure = () => {
+    return dispatch({
+      type: 'ADDMEASURE',
+      id: estimate.id,
+      measures: { roomLength, roomWidth, sqfPrice },
     });
-    resetLength();
-    resetWidth();
   };
   const handleDelete = (index) => {
     dispatch({ type: 'DELMEASURE', id: estimate.id, index });
@@ -41,7 +41,14 @@ function MeasurementsForm(props) {
   let totalSqf = () => {
     let total = 0;
     estimate.measures.map((x) =>
-      !isNaN(x.length) ? (total += x.length * (x.width || 1)) : null
+      !isNaN(x.roomLength) ? (total += x.roomLength * (x.roomWidth || 1)) : null
+    );
+    return total;
+  };
+  let totalSqfPrice = () => {
+    let total = 0;
+    estimate.measures.map((x) =>
+      !isNaN(x.roomLength) ? (total += x.roomLength * (x.roomWidth || 1)* x.sqfPrice) : null
     );
     return total;
   };
@@ -51,23 +58,32 @@ function MeasurementsForm(props) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit();
+            handleSubmitMeasure();
+            resetLength();
+            resetWidth();
+            resetSqfPrice();
           }}
         >
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <Typography align="center"  variant="h6">
+              <Typography align="center" variant="h6">
                 Measurements
               </Typography>
-              <Typography align="center" className={classes.title} variant="subtitle2">
-                *Length can be used for Length, Name or Sqf. 
+              <Typography
+                align="center"
+                className={classes.title}
+                variant="subtitle2"
+              >
+                *Length can be used for Length, Name or Sqf.
               </Typography>
             </Grid>
             <Grid item xs={4}>
               <TextField
+                autoFocus
                 variant="outlined"
+                required
                 className={classes.textfield}
-                value={length}
+                value={roomLength}
                 onChange={handleChangeLength}
                 margin="normal"
                 label="Length"
@@ -76,7 +92,7 @@ function MeasurementsForm(props) {
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={width}
+                value={roomWidth}
                 onChange={handleChangeWidth}
                 margin="normal"
                 type="number"
@@ -84,11 +100,21 @@ function MeasurementsForm(props) {
               />
             </Grid>
             <Grid item xs={4}>
+              <TextField
+                variant="outlined"
+                value={sqfPrice}
+                onChange={handleChangeSqfPrice}
+                margin="normal"
+                type="number"
+                label="Sqf Price"
+              />
+            </Grid>
+            <Grid item xs={12}>
               <Button
                 color="primary"
                 variant="contained"
                 type="submit"
-                className={classes.button}
+                fullWidth
                 size="small"
               >
                 Add
@@ -104,23 +130,23 @@ function MeasurementsForm(props) {
             <ListItem key={index}>
               <ListItemAvatar>
                 <Avatar>
-                  {!isNaN(measure.length) ? (
-                    <LabelImportantIcon color="secondary" />
+                  {!isNaN(measure.roomLength) ? (
+                    <AspectRatioIcon color="primary" />
                   ) : (
-                    <ViewModuleIcon color="primary"/>
+                    <ViewModuleIcon color="secondary" />
                   )}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  !isNaN(measure.length) && measure.width
-                    ? `${measure.width} x ${measure.length}`
-                    : `${measure.length}`
+                  !isNaN(measure.roomLength) && measure.roomWidth
+                    ? `${measure.roomWidth} x ${measure.roomLength}`
+                    : `${measure.roomLength}`
                 }
                 secondary={
-                  !isNaN(measure.length) && measure.width
-                    ? `${measure.width * measure.length} sqf`
-                    : `${measure.length} sqf`
+                  !isNaN(measure.roomLength) && measure.roomWidth
+                    ? `${measure.roomWidth * measure.roomLength} sqf @ $${measure.sqfPrice}`
+                    : !isNaN(measure.roomLength) ? `${measure.roomLength} sqf @ $${measure.sqfPrice}` : `${measure.roomLength} sqf`
                 }
               />
               <ListItemSecondaryAction onClick={() => handleDelete(index)}>
@@ -136,7 +162,7 @@ function MeasurementsForm(props) {
 
       <Paper>
         <Typography align="center" variant="subtitle1">
-          Total: {totalSqf()} Sqf
+          Total: {totalSqf()} Sqf (${totalSqfPrice().toFixed(2)})
         </Typography>
       </Paper>
     </Fragment>
