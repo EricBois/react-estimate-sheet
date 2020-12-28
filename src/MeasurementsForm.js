@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import LabelImportantIcon from '@material-ui/icons/LabelImportant';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -39,9 +40,11 @@ function MeasurementsForm(props) {
   };
   let totalSqf = () => {
     let total = 0;
-    estimate.measures.map((x) => total += (x.length * (x.width || 1)))
+    estimate.measures.map((x) =>
+      !isNaN(x.length) ? (total += x.length * (x.width || 1)) : null
+    );
     return total;
-  }
+  };
   return (
     <Fragment>
       <Paper>
@@ -53,8 +56,11 @@ function MeasurementsForm(props) {
         >
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <Typography align="center" className={classes.title} variant="h6">
+              <Typography align="center"  variant="h6">
                 Measurements
+              </Typography>
+              <Typography align="center" className={classes.title} variant="subtitle2">
+                *Length can be used for Length, Name or Sqf. 
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -73,6 +79,7 @@ function MeasurementsForm(props) {
                 value={width}
                 onChange={handleChangeWidth}
                 margin="normal"
+                type="number"
                 label="Width"
               />
             </Grid>
@@ -97,17 +104,21 @@ function MeasurementsForm(props) {
             <ListItem key={index}>
               <ListItemAvatar>
                 <Avatar>
-                  <LabelImportantIcon />
+                  {!isNaN(measure.length) ? (
+                    <LabelImportantIcon color="secondary" />
+                  ) : (
+                    <ViewModuleIcon color="primary"/>
+                  )}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  measure.length && measure.width
+                  !isNaN(measure.length) && measure.width
                     ? `${measure.width} x ${measure.length}`
                     : `${measure.length}`
                 }
                 secondary={
-                  measure.length && measure.width
+                  !isNaN(measure.length) && measure.width
                     ? `${measure.width * measure.length} sqf`
                     : `${measure.length} sqf`
                 }
@@ -123,8 +134,11 @@ function MeasurementsForm(props) {
       )}
       <Divider />
 
-      <Paper><Typography align="center" variant="subtitle1">
-      Total: {totalSqf()} Sqf</Typography></Paper>
+      <Paper>
+        <Typography align="center" variant="subtitle1">
+          Total: {totalSqf()} Sqf
+        </Typography>
+      </Paper>
     </Fragment>
   );
 }
