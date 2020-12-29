@@ -27,14 +27,15 @@ const reducer = (state, action) => {
           : estimate
       );
     case 'EDITMEASURE':
-      console.log(action.index)
+      console.log(action.index);
       return state.map((estimate) =>
         estimate.id === action.id
-          ? 
-            {...estimate, 
-            measures: estimate.measures.map((val, i) => i === action.index ? action.measures: val)
+          ? {
+              ...estimate,
+              measures: estimate.measures.map((val, i) =>
+                i === action.index ? action.measures : val
+              ),
             }
-          
           : estimate
       );
     case 'ADDMEASURE':
@@ -67,15 +68,16 @@ const reducer = (state, action) => {
           ? estimate.hours.splice(action.index, 1)
           : estimate
       );
-      case 'EDITHOURS':
-      console.log(action.index)
+    case 'EDITHOURS':
+      console.log(action.index);
       return state.map((estimate) =>
         estimate.id === action.id
-          ? 
-            {...estimate, 
-            hours: estimate.hours.map((val, i) => i === action.index ? action.hours: val)
+          ? {
+              ...estimate,
+              hours: estimate.hours.map((val, i) =>
+                i === action.index ? action.hours : val
+              ),
             }
-          
           : estimate
       );
     case 'ADDMATERIAL':
@@ -93,15 +95,16 @@ const reducer = (state, action) => {
           ? estimate.material.splice(action.index, 1)
           : estimate
       );
-      case 'EDITMATERIAL':
-      console.log(action.index)
+    case 'EDITMATERIAL':
+      console.log(action.index);
       return state.map((estimate) =>
         estimate.id === action.id
-          ? 
-            {...estimate, 
-            material: estimate.material.map((val, i) => i === action.index ? action.material: val)
+          ? {
+              ...estimate,
+              material: estimate.material.map((val, i) =>
+                i === action.index ? action.material : val
+              ),
             }
-          
           : estimate
       );
     default:
