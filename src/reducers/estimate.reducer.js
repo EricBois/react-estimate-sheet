@@ -67,6 +67,17 @@ const reducer = (state, action) => {
           ? estimate.hours.splice(action.index, 1)
           : estimate
       );
+      case 'EDITHOURS':
+      console.log(action.index)
+      return state.map((estimate) =>
+        estimate.id === action.id
+          ? 
+            {...estimate, 
+            hours: estimate.hours.map((val, i) => i === action.index ? action.hours: val)
+            }
+          
+          : estimate
+      );
     case 'ADDMATERIAL':
       return state.map((estimate) =>
         estimate.id === action.id
@@ -80,6 +91,17 @@ const reducer = (state, action) => {
       return state.filter((estimate) =>
         estimate.id === action.id
           ? estimate.material.splice(action.index, 1)
+          : estimate
+      );
+      case 'EDITMATERIAL':
+      console.log(action.index)
+      return state.map((estimate) =>
+        estimate.id === action.id
+          ? 
+            {...estimate, 
+            material: estimate.material.map((val, i) => i === action.index ? action.material: val)
+            }
+          
           : estimate
       );
     default:
