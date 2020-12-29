@@ -33,7 +33,10 @@ function App() {
         </Route>
 
         <Route exact path="/">
-          <Estimator estimates={estimates} />
+          <Estimator
+            estimates={estimates}
+            dispatch={(props) => dispatch(props)}
+          />
         </Route>
 
         <Route
