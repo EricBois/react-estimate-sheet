@@ -64,7 +64,7 @@ function MeasurementsForm(props) {
                 className={classes.title}
                 variant="subtitle2"
               >
-                *Length can be used for Length, Name or Sqf.
+                *Length field can be used for total sqf or name as well.
               </Typography>
             </Grid>
             <Grid item xs={4}>
