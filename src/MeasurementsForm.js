@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import useInputState from './hooks/useInputState';
+import MeasureList from './MeasureList';
 import { withStyles } from '@material-ui/styles';
 
 import Button from '@material-ui/core/Button';
@@ -8,16 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
-import DeleteIcon from '@material-ui/icons/Delete';
 import styles from './styles/measurementsStyles';
 
 function MeasurementsForm(props) {
@@ -34,9 +26,6 @@ function MeasurementsForm(props) {
       measures: { roomLength, roomWidth, sqfPrice },
     });
   };
-  const handleDelete = (index) => {
-    dispatch({ type: 'DELMEASURE', id: estimate.id, index });
-  };
   let totalSqf = () => {
     let total = 0;
     estimate.measures.map((x) =>
@@ -47,7 +36,9 @@ function MeasurementsForm(props) {
   let totalSqfPrice = () => {
     let total = 0;
     estimate.measures.map((x) =>
-      !isNaN(x.roomLength) ? (total += x.roomLength * (x.roomWidth || 1)* x.sqfPrice) : null
+      !isNaN(x.roomLength)
+        ? (total += x.roomLength * (x.roomWidth || 1) * x.sqfPrice)
+        : null
     );
     return total;
   };
@@ -126,44 +117,21 @@ function MeasurementsForm(props) {
       {estimate && (
         <List dense>
           {estimate.measures.map((measure, index) => (
-            <ListItem key={index}>
-              <ListItemAvatar>
-                <Avatar>
-                  {!isNaN(measure.roomLength) ? (
-                    <AspectRatioIcon color="primary" />
-                  ) : (
-                    <ViewModuleIcon color="secondary" />
-                  )}
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={
-                  !isNaN(measure.roomLength) && measure.roomWidth
-                    ? `${measure.roomWidth} x ${measure.roomLength}`
-                    : `${measure.roomLength}`
-                }
-                secondary={
-                  !isNaN(measure.roomLength) && measure.roomWidth
-                    ? `${measure.roomWidth * measure.roomLength} sqf @ $${measure.sqfPrice}`
-                    : !isNaN(measure.roomLength) ? `${measure.roomLength} sqf @ $${measure.sqfPrice}` : `${measure.roomLength} sqf`
-                }
-              />
-              <ListItemSecondaryAction onClick={() => handleDelete(index)}>
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <Fragment key={index}>
+            <MeasureList measure={measure} index={index} estimate={estimate} dispatch={(props) => dispatch(props)}/>
+            <Divider />
+            </Fragment>
           ))}
         </List>
       )}
       <Divider />
-
+      {estimate && (
       <Paper>
         <Typography align="center" variant="subtitle1">
           Total: {totalSqf()} Sqf (${totalSqfPrice().toFixed(2)})
         </Typography>
       </Paper>
+      )}
     </Fragment>
   );
 }

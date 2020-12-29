@@ -17,7 +17,7 @@ const reducer = (state, action) => {
       return state.filter((estimate) => estimate.id !== action.id);
     case 'EDIT':
       return state.map((estimate) =>
-          estimate.id === action.id
+        estimate.id === action.id
           ? {
               ...estimate,
               name: action.name,
@@ -26,46 +26,57 @@ const reducer = (state, action) => {
             }
           : estimate
       );
-      case 'ADDMEASURE':
-        return state.map((estimate) =>
-          estimate.id === action.id
+    case 'EDITMEASURE':
+      console.log(action.index)
+      return state.map((estimate) =>
+        estimate.id === action.id
+          ? 
+            {...estimate, 
+            measures: estimate.measures.map((val, i) => i === action.index ? action.measures: val)
+            }
+          
+          : estimate
+      );
+    case 'ADDMEASURE':
+      return state.map((estimate) =>
+        estimate.id === action.id
           ? {
               ...estimate,
               measures: [...estimate.measures, action.measures],
             }
           : estimate
       );
-      case 'DELMEASURE':
+    case 'DELMEASURE':
       return state.filter((estimate) =>
         estimate.id === action.id
           ? estimate.measures.splice(action.index, 1)
           : estimate
       );
-      case 'ADDHOURS':
-        return state.map((estimate) =>
-          estimate.id === action.id
+    case 'ADDHOURS':
+      return state.map((estimate) =>
+        estimate.id === action.id
           ? {
               ...estimate,
               hours: [...estimate.hours, action.hours],
             }
           : estimate
       );
-      case 'DELHOURS':
+    case 'DELHOURS':
       return state.filter((estimate) =>
         estimate.id === action.id
           ? estimate.hours.splice(action.index, 1)
           : estimate
       );
-      case 'ADDMATERIAL':
-        return state.map((estimate) =>
-          estimate.id === action.id
+    case 'ADDMATERIAL':
+      return state.map((estimate) =>
+        estimate.id === action.id
           ? {
               ...estimate,
               material: [...estimate.material, action.material],
             }
           : estimate
       );
-      case 'DELMATERIAL':
+    case 'DELMATERIAL':
       return state.filter((estimate) =>
         estimate.id === action.id
           ? estimate.material.splice(action.index, 1)
