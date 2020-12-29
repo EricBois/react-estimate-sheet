@@ -1,41 +1,34 @@
-import React, {Fragment} from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import EstimateList from './EstimateList';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import Divider from '@material-ui/core/Divider';
 
 function Estimator(props) {
-  const { estimates } = props;
-  const history = useHistory();
+  const { estimates, dispatch } = props;
 
-  const handleClick = (id) => {
-    history.push(`/estimate/${id}`);
-  };
   return (
     <Paper>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <List component="nav" aria-label="contacts">
-            { estimates.length === 0 &&
-            <ListItem component={Link} to="/create" button>No Estimate Yet ... Create Estimate</ListItem>
-            }
+            {estimates.length === 0 && (
+              <ListItem component={Link} to="/create" button>
+                No Estimate Yet ... Create Estimate
+              </ListItem>
+            )}
             {estimates.map((estimate) => (
               <Fragment key={estimate.id}>
-                <ListItem onClick={() => handleClick(estimate.id)} button>
-                  <ListItemIcon>
-                    <HomeWorkIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={`${estimate.name} ${estimate.address ? '@' : ''} ${estimate.address}`}
-                    secondary={`${estimate.note}`} />
-                </ListItem>
+                <EstimateList
+                  estimate={estimate}
+                  dispatch={(props) => dispatch(props)}
+                />
                 <Divider />
-                </Fragment>
+              </Fragment>
             ))}
           </List>
         </Grid>
