@@ -118,19 +118,24 @@ function MeasurementsForm(props) {
         <List dense>
           {estimate.measures.map((measure, index) => (
             <Fragment key={index}>
-            <MeasureList measure={measure} index={index} estimate={estimate} dispatch={(props) => dispatch(props)}/>
-            <Divider />
+              <MeasureList
+                measure={measure}
+                index={index}
+                estimate={estimate}
+                dispatch={(props) => dispatch(props)}
+              />
+              <Divider />
             </Fragment>
           ))}
         </List>
       )}
       <Divider />
       {estimate && (
-      <Paper>
-        <Typography align="center" variant="subtitle1">
-          Total: {totalSqf()} Sqf (${totalSqfPrice().toFixed(2)})
-        </Typography>
-      </Paper>
+        <Paper>
+          <Typography align="center" variant="subtitle1">
+            Total: {totalSqf()} Sqf (${totalSqfPrice().toFixed(2)})
+          </Typography>
+        </Paper>
       )}
     </Fragment>
   );

@@ -7,15 +7,9 @@ import Grid from '@material-ui/core/Grid';
 
 function EditMeasureForm(props) {
   const { dispatch, toggleEditForm, estimate, measure, index } = props;
-  const [roomLength, handleChangeLength] = useInputState(
-    measure.roomLength
-  );
-  const [sqfPrice, handleChangeSqfPrice] = useInputState(
-    measure.sqfPrice
-  );
-  const [roomWidth, handleChangeWidth] = useInputState(
-    measure.roomWidth
-  );
+  const [roomLength, handleChangeLength] = useInputState(measure.roomLength);
+  const [sqfPrice, handleChangeSqfPrice] = useInputState(measure.sqfPrice);
+  const [roomWidth, handleChangeWidth] = useInputState(measure.roomWidth);
   const handleEditMeasure = () => {
     return dispatch({
       type: 'EDITMEASURE',
@@ -26,13 +20,12 @@ function EditMeasureForm(props) {
   };
   return (
     <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleEditMeasure();
-        }}
-      >
-    <Grid container spacing={1}>
-      
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleEditMeasure();
+      }}
+    >
+      <Grid container spacing={1}>
         <Grid item xs={4}>
           <TextField
             autoFocus
@@ -65,15 +58,15 @@ function EditMeasureForm(props) {
           />
         </Grid>
         <Grid item xs={6}>
-            <Button
-                color="secondary"
-                variant="contained"
-                fullWidth
-                onClick={() => toggleEditForm()}
-              >
-                CANCEL
-              </Button>
-            </Grid>
+          <Button
+            color="secondary"
+            variant="contained"
+            fullWidth
+            onClick={() => toggleEditForm()}
+          >
+            CANCEL
+          </Button>
+        </Grid>
         <Grid item xs={6}>
           <Button
             color="primary"
@@ -85,8 +78,7 @@ function EditMeasureForm(props) {
             Edit
           </Button>
         </Grid>
-      
-    </Grid>
+      </Grid>
     </form>
   );
 }

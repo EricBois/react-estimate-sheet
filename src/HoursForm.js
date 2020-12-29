@@ -102,8 +102,13 @@ function HoursForm(props) {
         <List dense>
           {estimate.hours.map((hour, index) => (
             <Fragment key={index}>
-            <HoursList hour={hour} index={index} estimate={estimate} dispatch={(props) => dispatch(props)}/>
-            <Divider />
+              <HoursList
+                hour={hour}
+                index={index}
+                estimate={estimate}
+                dispatch={(props) => dispatch(props)}
+              />
+              <Divider />
             </Fragment>
           ))}
         </List>

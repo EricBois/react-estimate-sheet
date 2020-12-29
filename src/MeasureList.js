@@ -19,7 +19,13 @@ function MeasureList(props) {
   return (
     <ListItem>
       {isEditing ? (
-        <EditMeasureForm estimate={estimate} measure={measure} index={index} toggleEditForm={toggle} dispatch={(props) => dispatch(props)} />
+        <EditMeasureForm
+          estimate={estimate}
+          measure={measure}
+          index={index}
+          toggleEditForm={toggle}
+          dispatch={(props) => dispatch(props)}
+        />
       ) : (
         <>
           <ListItemAvatar>
