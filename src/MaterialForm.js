@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import useInputState from './hooks/useInputState';
+import MaterialList from './MaterialList';
 import { withStyles } from '@material-ui/styles';
 
 import Button from '@material-ui/core/Button';
@@ -8,15 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import LabelImportantIcon from '@material-ui/icons/LabelImportant';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
-import DeleteIcon from '@material-ui/icons/Delete';
 import styles from './styles/measurementsStyles';
 
 function MaterialForm(props) {
@@ -35,9 +28,6 @@ function MaterialForm(props) {
     resetItem();
     resetQuantity();
     resetPrice();
-  };
-  const handleDelete = (index) => {
-    dispatch({ type: 'DELMATERIAL', id: estimate.id, index });
   };
   let totalMats = () => {
     let total = 0;
@@ -110,28 +100,15 @@ function MaterialForm(props) {
       {estimate && estimate.material && (
         <List dense>
           {estimate.material.map((material, index) => (
-            <ListItem key={index}>
-              <ListItemAvatar>
-                <Avatar>
-                  <LabelImportantIcon color="secondary" />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={material ? `${material.item}` : ''}
-                secondary={
-                  material && material.price
-                    ? `${material.quantity} x $${material.price} ($${
-                        material.quantity * material.price
-                      })`
-                    : `Quantity: ${material.quantity}`
-                }
+            <Fragment key={index}>
+              <MaterialList
+                material={material}
+                index={index}
+                estimate={estimate}
+                dispatch={(props) => dispatch(props)}
               />
-              <ListItemSecondaryAction onClick={() => handleDelete(index)}>
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+              <Divider />
+            </Fragment>
           ))}
         </List>
       )}
