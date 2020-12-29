@@ -26,7 +26,7 @@ function Estimator(props) {
             <ListItem component={Link} to="/create" button>No Estimate Yet ... Create Estimate</ListItem>
             }
             {estimates.map((estimate) => (
-              <Fragment>
+              <Fragment key={estimate.id}>
                 <ListItem onClick={() => handleClick(estimate.id)} button>
                   <ListItemIcon>
                     <HomeWorkIcon />
