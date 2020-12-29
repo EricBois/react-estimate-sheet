@@ -6,14 +6,14 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
 function EditMeasureForm(props) {
-  const { dispatch, estimate, measure, index } = props;
-  const [roomLength, handleChangeLength, resetLength] = useInputState(
+  const { dispatch, toggleEditForm, estimate, measure, index } = props;
+  const [roomLength, handleChangeLength] = useInputState(
     measure.roomLength
   );
-  const [sqfPrice, handleChangeSqfPrice, resetSqfPrice] = useInputState(
+  const [sqfPrice, handleChangeSqfPrice] = useInputState(
     measure.sqfPrice
   );
-  const [roomWidth, handleChangeWidth, resetWidth] = useInputState(
+  const [roomWidth, handleChangeWidth] = useInputState(
     measure.roomWidth
   );
   const handleEditMeasure = () => {
@@ -64,7 +64,17 @@ function EditMeasureForm(props) {
             label="Sqf Price"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
+            <Button
+                color="secondary"
+                variant="contained"
+                fullWidth
+                onClick={() => toggleEditForm()}
+              >
+                CANCEL
+              </Button>
+            </Grid>
+        <Grid item xs={6}>
           <Button
             color="primary"
             variant="contained"
