@@ -1,4 +1,4 @@
-import react from 'react';
+import React from 'react';
 import { useAuth } from '../store/Auth';
 import useInputState from '../hooks/useInputState';
 
