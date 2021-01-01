@@ -1,29 +1,28 @@
 import React from 'react';
-import useInputState from './hooks/useInputState';
+import useInputState from '../hooks/useInputState';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
-function EditMaterialForm(props) {
-  const { material, index, dispatch, estimate, toggleEditForm } = props;
-
-  const [item, handleChangeItem] = useInputState(material.item);
-  const [quantity, handleChangeQuantity] = useInputState(material.quantity);
-  const [price, handleChangePrice] = useInputState(material.price);
-  const handleEditMaterial = () => {
+function EditMeasureForm(props) {
+  const { dispatch, toggleEditForm, estimate, measure, index } = props;
+  const [roomLength, handleChangeLength] = useInputState(measure.roomLength);
+  const [sqfPrice, handleChangeSqfPrice] = useInputState(measure.sqfPrice);
+  const [roomWidth, handleChangeWidth] = useInputState(measure.roomWidth);
+  const handleEditMeasure = () => {
     return dispatch({
-      type: 'EDITMATERIAL',
+      type: 'EDITMEASURE',
       id: estimate.id,
       index: index,
-      material: { item, quantity, price },
+      measures: { roomLength, roomWidth, sqfPrice },
     });
   };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleEditMaterial();
+        handleEditMeasure();
       }}
     >
       <Grid container spacing={1}>
@@ -32,31 +31,30 @@ function EditMaterialForm(props) {
             autoFocus
             variant="outlined"
             required
-            value={item}
-            onChange={handleChangeItem}
+            value={roomLength}
+            onChange={handleChangeLength}
             margin="normal"
-            label="Item Name"
+            label="Length"
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             variant="outlined"
-            value={quantity}
-            required
-            onChange={handleChangeQuantity}
+            value={roomWidth}
+            onChange={handleChangeWidth}
             margin="normal"
             type="number"
-            label="Quantity"
+            label="Width"
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             variant="outlined"
-            value={price}
-            onChange={handleChangePrice}
+            value={sqfPrice}
+            onChange={handleChangeSqfPrice}
             margin="normal"
             type="number"
-            label="Price"
+            label="Sqf Price"
           />
         </Grid>
         <Grid item xs={6}>
@@ -73,11 +71,11 @@ function EditMaterialForm(props) {
           <Button
             color="primary"
             variant="contained"
-            fullWidth
             type="submit"
+            fullWidth
             size="small"
           >
-            EDIT
+            Edit
           </Button>
         </Grid>
       </Grid>
@@ -85,4 +83,4 @@ function EditMaterialForm(props) {
   );
 }
 
-export default EditMaterialForm;
+export default EditMeasureForm;

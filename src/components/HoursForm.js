@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import useInputState from './hooks/useInputState';
-import MeasureList from './MeasureList';
+import useInputState from '../hooks/useInputState';
 import { withStyles } from '@material-ui/styles';
+import HoursList from './HoursList';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,36 +10,28 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import styles from './styles/measurementsStyles';
+import styles from '../styles/measurementsStyles';
 
-function MeasurementsForm(props) {
+function HoursForm(props) {
   const { classes, dispatch, estimate } = props;
 
-  const [roomLength, handleChangeLength, resetLength] = useInputState('');
-  const [sqfPrice, handleChangeSqfPrice, resetSqfPrice] = useInputState('0');
-  const [roomWidth, handleChangeWidth, resetWidth] = useInputState('');
+  const [item, handleChangeItem, resetItem] = useInputState('');
+  const [hours, handleChangeHours, resetHours] = useInputState('');
+  const [price, handleChangePrice, resetPrice] = useInputState('');
 
-  const handleSubmitMeasure = () => {
-    return dispatch({
-      type: 'ADDMEASURE',
+  const handleSubmitHours = () => {
+    dispatch({
+      type: 'ADDHOURS',
       id: estimate.id,
-      measures: { roomLength, roomWidth, sqfPrice },
+      hours: { item, hours, price },
     });
+    resetItem();
+    resetHours();
+    resetPrice();
   };
-  let totalSqf = () => {
+  let totalHours = () => {
     let total = 0;
-    estimate.measures.map((x) =>
-      !isNaN(x.roomLength) ? (total += x.roomLength * (x.roomWidth || 1)) : null
-    );
-    return total;
-  };
-  let totalSqfPrice = () => {
-    let total = 0;
-    estimate.measures.map((x) =>
-      !isNaN(x.roomLength)
-        ? (total += x.roomLength * (x.roomWidth || 1) * x.sqfPrice)
-        : null
-    );
+    estimate.hours.map((x) => (total += x.hours * x.price));
     return total;
   };
   return (
@@ -48,23 +40,13 @@ function MeasurementsForm(props) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmitMeasure();
-            resetLength();
-            resetWidth();
-            resetSqfPrice();
+            handleSubmitHours();
           }}
         >
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography align="center" variant="h6">
-                Measurements
-              </Typography>
-              <Typography
-                align="center"
-                className={classes.title}
-                variant="subtitle2"
-              >
-                *Length field can be used for total sqf or name as well.
+                Hours
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -73,38 +55,40 @@ function MeasurementsForm(props) {
                 variant="outlined"
                 required
                 className={classes.textfield}
-                value={roomLength}
-                onChange={handleChangeLength}
+                value={item}
+                onChange={handleChangeItem}
                 margin="normal"
-                label="Length"
+                label="Item Name"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={roomWidth}
-                onChange={handleChangeWidth}
+                value={hours}
+                required
+                onChange={handleChangeHours}
                 margin="normal"
                 type="number"
-                label="Width"
+                label="Hours"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={sqfPrice}
-                onChange={handleChangeSqfPrice}
+                value={price}
+                required
+                onChange={handleChangePrice}
                 margin="normal"
                 type="number"
-                label="Sqf Price"
+                label="Price"
               />
             </Grid>
             <Grid item xs={12}>
               <Button
                 color="primary"
                 variant="contained"
-                type="submit"
                 fullWidth
+                type="submit"
                 size="small"
               >
                 Add
@@ -114,12 +98,12 @@ function MeasurementsForm(props) {
         </form>
       </Paper>
       <Divider />
-      {estimate && (
+      {estimate && estimate.hours && (
         <List dense>
-          {estimate.measures.map((measure, index) => (
+          {estimate.hours.map((hour, index) => (
             <Fragment key={index}>
-              <MeasureList
-                measure={measure}
+              <HoursList
+                hour={hour}
                 index={index}
                 estimate={estimate}
                 dispatch={(props) => dispatch(props)}
@@ -130,15 +114,14 @@ function MeasurementsForm(props) {
         </List>
       )}
       <Divider />
-      {estimate && (
-        <Paper>
-          <Typography align="center" variant="subtitle1">
-            Total: {totalSqf()} Sqf (${totalSqfPrice().toFixed(2)})
-          </Typography>
-        </Paper>
-      )}
+
+      <Paper>
+        <Typography align="center" variant="subtitle1">
+          Total: ${totalHours()}
+        </Typography>
+      </Paper>
     </Fragment>
   );
 }
 
-export default withStyles(styles)(MeasurementsForm);
+export default withStyles(styles)(HoursForm);

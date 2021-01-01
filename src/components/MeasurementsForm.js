@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import useInputState from './hooks/useInputState';
-import MaterialList from './MaterialList';
+import useInputState from '../hooks/useInputState';
+import MeasureList from './MeasureList';
 import { withStyles } from '@material-ui/styles';
 
 import Button from '@material-ui/core/Button';
@@ -10,28 +10,36 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import styles from './styles/measurementsStyles';
+import styles from '../styles/measurementsStyles';
 
-function MaterialForm(props) {
+function MeasurementsForm(props) {
   const { classes, dispatch, estimate } = props;
 
-  const [item, handleChangeItem, resetItem] = useInputState('');
-  const [quantity, handleChangeQuantity, resetQuantity] = useInputState('');
-  const [price, handleChangePrice, resetPrice] = useInputState('0');
+  const [roomLength, handleChangeLength, resetLength] = useInputState('');
+  const [sqfPrice, handleChangeSqfPrice, resetSqfPrice] = useInputState('0');
+  const [roomWidth, handleChangeWidth, resetWidth] = useInputState('');
 
-  const handleSubmitItem = () => {
-    dispatch({
-      type: 'ADDMATERIAL',
+  const handleSubmitMeasure = () => {
+    return dispatch({
+      type: 'ADDMEASURE',
       id: estimate.id,
-      material: { item, quantity, price },
+      measures: { roomLength, roomWidth, sqfPrice },
     });
-    resetItem();
-    resetQuantity();
-    resetPrice();
   };
-  let totalMats = () => {
+  let totalSqf = () => {
     let total = 0;
-    estimate.material.map((x) => (total += x.quantity * x.price));
+    estimate.measures.map((x) =>
+      !isNaN(x.roomLength) ? (total += x.roomLength * (x.roomWidth || 1)) : null
+    );
+    return total;
+  };
+  let totalSqfPrice = () => {
+    let total = 0;
+    estimate.measures.map((x) =>
+      !isNaN(x.roomLength)
+        ? (total += x.roomLength * (x.roomWidth || 1) * x.sqfPrice)
+        : null
+    );
     return total;
   };
   return (
@@ -40,13 +48,23 @@ function MaterialForm(props) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmitItem();
+            handleSubmitMeasure();
+            resetLength();
+            resetWidth();
+            resetSqfPrice();
           }}
         >
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography align="center" variant="h6">
-                Material
+                Measurements
+              </Typography>
+              <Typography
+                align="center"
+                className={classes.title}
+                variant="subtitle2"
+              >
+                *Length field can be used for total sqf or name as well.
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -55,39 +73,38 @@ function MaterialForm(props) {
                 variant="outlined"
                 required
                 className={classes.textfield}
-                value={item}
-                onChange={handleChangeItem}
+                value={roomLength}
+                onChange={handleChangeLength}
                 margin="normal"
-                label="Item Name"
+                label="Length"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={quantity}
-                required
-                onChange={handleChangeQuantity}
+                value={roomWidth}
+                onChange={handleChangeWidth}
                 margin="normal"
                 type="number"
-                label="Quantity"
+                label="Width"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={price}
-                onChange={handleChangePrice}
+                value={sqfPrice}
+                onChange={handleChangeSqfPrice}
                 margin="normal"
                 type="number"
-                label="Price"
+                label="Sqf Price"
               />
             </Grid>
             <Grid item xs={12}>
               <Button
                 color="primary"
                 variant="contained"
-                fullWidth
                 type="submit"
+                fullWidth
                 size="small"
               >
                 Add
@@ -97,12 +114,12 @@ function MaterialForm(props) {
         </form>
       </Paper>
       <Divider />
-      {estimate && estimate.material && (
+      {estimate && (
         <List dense>
-          {estimate.material.map((material, index) => (
+          {estimate.measures.map((measure, index) => (
             <Fragment key={index}>
-              <MaterialList
-                material={material}
+              <MeasureList
+                measure={measure}
                 index={index}
                 estimate={estimate}
                 dispatch={(props) => dispatch(props)}
@@ -113,14 +130,15 @@ function MaterialForm(props) {
         </List>
       )}
       <Divider />
-
-      <Paper>
-        <Typography align="center" variant="subtitle1">
-          Total: ${totalMats()}
-        </Typography>
-      </Paper>
+      {estimate && (
+        <Paper>
+          <Typography align="center" variant="subtitle1">
+            Total: {totalSqf()} Sqf (${totalSqfPrice().toFixed(2)})
+          </Typography>
+        </Paper>
+      )}
     </Fragment>
   );
 }
 
-export default withStyles(styles)(MaterialForm);
+export default withStyles(styles)(MeasurementsForm);

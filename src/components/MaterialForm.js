@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import useInputState from './hooks/useInputState';
+import useInputState from '../hooks/useInputState';
+import MaterialList from './MaterialList';
 import { withStyles } from '@material-ui/styles';
-import HoursList from './HoursList';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,28 +10,28 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import styles from './styles/measurementsStyles';
+import styles from '../styles/measurementsStyles';
 
-function HoursForm(props) {
+function MaterialForm(props) {
   const { classes, dispatch, estimate } = props;
 
   const [item, handleChangeItem, resetItem] = useInputState('');
-  const [hours, handleChangeHours, resetHours] = useInputState('');
-  const [price, handleChangePrice, resetPrice] = useInputState('');
+  const [quantity, handleChangeQuantity, resetQuantity] = useInputState('');
+  const [price, handleChangePrice, resetPrice] = useInputState('0');
 
-  const handleSubmitHours = () => {
+  const handleSubmitItem = () => {
     dispatch({
-      type: 'ADDHOURS',
+      type: 'ADDMATERIAL',
       id: estimate.id,
-      hours: { item, hours, price },
+      material: { item, quantity, price },
     });
     resetItem();
-    resetHours();
+    resetQuantity();
     resetPrice();
   };
-  let totalHours = () => {
+  let totalMats = () => {
     let total = 0;
-    estimate.hours.map((x) => (total += x.hours * x.price));
+    estimate.material.map((x) => (total += x.quantity * x.price));
     return total;
   };
   return (
@@ -40,13 +40,13 @@ function HoursForm(props) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmitHours();
+            handleSubmitItem();
           }}
         >
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography align="center" variant="h6">
-                Hours
+                Material
               </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -64,19 +64,18 @@ function HoursForm(props) {
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={hours}
+                value={quantity}
                 required
-                onChange={handleChangeHours}
+                onChange={handleChangeQuantity}
                 margin="normal"
                 type="number"
-                label="Hours"
+                label="Quantity"
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
                 value={price}
-                required
                 onChange={handleChangePrice}
                 margin="normal"
                 type="number"
@@ -98,12 +97,12 @@ function HoursForm(props) {
         </form>
       </Paper>
       <Divider />
-      {estimate && estimate.hours && (
+      {estimate && estimate.material && (
         <List dense>
-          {estimate.hours.map((hour, index) => (
+          {estimate.material.map((material, index) => (
             <Fragment key={index}>
-              <HoursList
-                hour={hour}
+              <MaterialList
+                material={material}
                 index={index}
                 estimate={estimate}
                 dispatch={(props) => dispatch(props)}
@@ -117,11 +116,11 @@ function HoursForm(props) {
 
       <Paper>
         <Typography align="center" variant="subtitle1">
-          Total: ${totalHours()}
+          Total: ${totalMats()}
         </Typography>
       </Paper>
     </Fragment>
   );
 }
 
-export default withStyles(styles)(HoursForm);
+export default withStyles(styles)(MaterialForm);

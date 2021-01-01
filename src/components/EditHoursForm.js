@@ -1,28 +1,31 @@
 import React from 'react';
-import useInputState from './hooks/useInputState';
+import useInputState from '../hooks/useInputState';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
-function EditMeasureForm(props) {
-  const { dispatch, toggleEditForm, estimate, measure, index } = props;
-  const [roomLength, handleChangeLength] = useInputState(measure.roomLength);
-  const [sqfPrice, handleChangeSqfPrice] = useInputState(measure.sqfPrice);
-  const [roomWidth, handleChangeWidth] = useInputState(measure.roomWidth);
-  const handleEditMeasure = () => {
+function EditHoursForm(props) {
+  const { hour, toggleEditForm, index, dispatch, estimate } = props;
+
+  const [item, handleChangeItem] = useInputState(hour.item);
+  const [hours, handleChangeHours] = useInputState(hour.hours);
+  const [price, handleChangePrice] = useInputState(hour.price);
+
+  const handleEditHours = () => {
     return dispatch({
-      type: 'EDITMEASURE',
+      type: 'EDITHOURS',
       id: estimate.id,
       index: index,
-      measures: { roomLength, roomWidth, sqfPrice },
+      hours: { item, hours, price },
     });
   };
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleEditMeasure();
+        handleEditHours();
       }}
     >
       <Grid container spacing={1}>
@@ -31,30 +34,32 @@ function EditMeasureForm(props) {
             autoFocus
             variant="outlined"
             required
-            value={roomLength}
-            onChange={handleChangeLength}
+            value={item}
+            onChange={handleChangeItem}
             margin="normal"
-            label="Length"
+            label="Item Name"
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             variant="outlined"
-            value={roomWidth}
-            onChange={handleChangeWidth}
+            value={hours}
+            required
+            onChange={handleChangeHours}
             margin="normal"
             type="number"
-            label="Width"
+            label="Hours"
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             variant="outlined"
-            value={sqfPrice}
-            onChange={handleChangeSqfPrice}
+            value={price}
+            required
+            onChange={handleChangePrice}
             margin="normal"
             type="number"
-            label="Sqf Price"
+            label="Price"
           />
         </Grid>
         <Grid item xs={6}>
@@ -68,19 +73,12 @@ function EditMeasureForm(props) {
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            fullWidth
-            size="small"
-          >
-            Edit
+          <Button color="primary" variant="contained" type="submit" fullWidth>
+            EDIT
           </Button>
         </Grid>
       </Grid>
     </form>
   );
 }
-
-export default EditMeasureForm;
+export default EditHoursForm;

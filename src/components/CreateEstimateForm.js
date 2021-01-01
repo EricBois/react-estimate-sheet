@@ -1,7 +1,11 @@
 import React from 'react';
-import useInputState from './hooks/useInputState';
+import { useHistory } from "react-router-dom";
+import { v4 as uuid } from 'uuid';
+import useInputState from '../hooks/useInputState';
+
+
 import { withStyles } from '@material-ui/styles';
-import styles from './styles/createEstimateStyles';
+import styles from '../styles/createEstimateStyles';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -10,18 +14,21 @@ import TextField from '@material-ui/core/TextField';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
 
-function EditEstimateForm(props) {
-  const { classes, dispatch, estimate, toggleEditForm } = props;
-  const [name, handleChangeName, resetName] = useInputState(estimate.name);
-  const [address, handleChangeAddress, resetAddress] = useInputState(estimate.address);
-  const [note, handleChangeNote, resetNote] = useInputState(estimate.note);
+function CreateEstimateForm(props) {
+  const [name, handleChangeName, resetName] = useInputState('');
+  const [address, handleChangeAddress, resetAddress] = useInputState('');
+  const [note, handleChangeNote, resetNote] = useInputState('');
 
-  const handleSubmitForm = () => {
-    dispatch({ type: 'EDIT', id: estimate.id, name, address, note });
+  const { classes, dispatch } = props;
+  const history = useHistory();
+  const id = uuid()
+
+  const handleSubmit = () => {
+    dispatch({ type: 'ADD', id, name, address, note });
     resetName();
     resetAddress();
     resetNote();
-    toggleEditForm();
+    history.push(`/estimate/${id}`)
   };
 
   return (
@@ -42,7 +49,7 @@ function EditEstimateForm(props) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          handleSubmitForm();
+          handleSubmit();
         }}
       >
         <Grid container justify="center" spacing={2}>
@@ -74,10 +81,11 @@ function EditEstimateForm(props) {
               placeholder="*OPTIONAL, Describe work / project"
             />
           </Grid>
-          <Button type="submit">Edit</Button>
+          <Button type="submit">Create</Button>
         </Grid>
       </form>
     </Paper>
-  )
+  );
 }
-export default withStyles(styles)(EditEstimateForm);
+
+export default withStyles(styles)(CreateEstimateForm);

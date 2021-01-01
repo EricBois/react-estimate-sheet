@@ -1,11 +1,7 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
-import { v4 as uuid } from 'uuid';
-import useInputState from './hooks/useInputState';
-
-
+import useInputState from '../hooks/useInputState';
 import { withStyles } from '@material-ui/styles';
-import styles from './styles/createEstimateStyles';
+import styles from '../styles/createEstimateStyles';
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -14,21 +10,18 @@ import TextField from '@material-ui/core/TextField';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
 
-function CreateEstimateForm(props) {
-  const [name, handleChangeName, resetName] = useInputState('');
-  const [address, handleChangeAddress, resetAddress] = useInputState('');
-  const [note, handleChangeNote, resetNote] = useInputState('');
+function EditEstimateForm(props) {
+  const { classes, dispatch, estimate, toggleEditForm } = props;
+  const [name, handleChangeName, resetName] = useInputState(estimate.name);
+  const [address, handleChangeAddress, resetAddress] = useInputState(estimate.address);
+  const [note, handleChangeNote, resetNote] = useInputState(estimate.note);
 
-  const { classes, dispatch } = props;
-  const history = useHistory();
-  const id = uuid()
-
-  const handleSubmit = () => {
-    dispatch({ type: 'ADD', id, name, address, note });
+  const handleSubmitForm = () => {
+    dispatch({ type: 'EDIT', id: estimate.id, name, address, note });
     resetName();
     resetAddress();
     resetNote();
-    history.push(`/estimate/${id}`)
+    toggleEditForm();
   };
 
   return (
@@ -49,7 +42,7 @@ function CreateEstimateForm(props) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          handleSubmit();
+          handleSubmitForm();
         }}
       >
         <Grid container justify="center" spacing={2}>
@@ -81,11 +74,10 @@ function CreateEstimateForm(props) {
               placeholder="*OPTIONAL, Describe work / project"
             />
           </Grid>
-          <Button type="submit">Create</Button>
+          <Button type="submit">Edit</Button>
         </Grid>
       </form>
     </Paper>
-  );
+  )
 }
-
-export default withStyles(styles)(CreateEstimateForm);
+export default withStyles(styles)(EditEstimateForm);

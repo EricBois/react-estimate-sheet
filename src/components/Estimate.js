@@ -14,7 +14,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Grid from '@material-ui/core/Grid';
-import styles from './styles/estimateStyles';
+import styles from '../styles/estimateStyles';
 
 function Estimate(props) {
   const { estimate, classes, dispatch } = props;
