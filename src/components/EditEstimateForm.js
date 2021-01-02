@@ -1,5 +1,6 @@
 import React from 'react';
 import useInputState from '../hooks/useInputState';
+import { database } from '../firebase';
 import { withStyles } from '@material-ui/styles';
 import styles from '../styles/createEstimateStyles';
 
@@ -13,7 +14,9 @@ import Button from '@material-ui/core/Button';
 function EditEstimateForm(props) {
   const { classes, dispatch, estimate, toggleEditForm } = props;
   const [name, handleChangeName, resetName] = useInputState(estimate.name);
-  const [address, handleChangeAddress, resetAddress] = useInputState(estimate.address);
+  const [address, handleChangeAddress, resetAddress] = useInputState(
+    estimate.address
+  );
   const [note, handleChangeNote, resetNote] = useInputState(estimate.note);
 
   const handleSubmitForm = () => {
@@ -22,6 +25,15 @@ function EditEstimateForm(props) {
     resetAddress();
     resetNote();
     toggleEditForm();
+  };
+
+  const editDocFirestore = async () => {
+    const db = await database;
+    return db.collection('estimates').doc(estimate.id.toString()).update({
+      name,
+      address,
+      note,
+    });
   };
 
   return (
@@ -43,6 +55,7 @@ function EditEstimateForm(props) {
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmitForm();
+          editDocFirestore();
         }}
       >
         <Grid container justify="center" spacing={2}>
@@ -66,18 +79,37 @@ function EditEstimateForm(props) {
           </Grid>
           <Grid item xs={12}>
             <TextareaAutosize
-            value={note}
-            onChange={handleChangeNote}
+              value={note}
+              onChange={handleChangeNote}
               className={classes.textArea}
               aria-label="minimum height"
               rowsMin={5}
               placeholder="*OPTIONAL, Describe work / project"
             />
           </Grid>
-          <Button type="submit">Edit</Button>
+          <Grid item xs={6}>
+            <Button
+              color="secondary"
+              variant="contained"
+              fullWidth
+              onClick={() => toggleEditForm()}
+            >
+              CANCEL
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+              type="submit"
+            >
+              Edit
+            </Button>
+          </Grid>
         </Grid>
       </form>
     </Paper>
-  )
+  );
 }
 export default withStyles(styles)(EditEstimateForm);

@@ -15,34 +15,34 @@ export function useAuth() {
       });
   };
 
-  // const saveUserToDB = async (user, name) => {
-  //   const db = await database;
-  //   return db
-  //     .collection("users")
-  //     .doc(user.uid.toString())
-  //     .set({
-  //       id: user.uid.toString(),
-  //       name,
-  //       email: user.email
-  //     })
-  //     .then(() => {
-  //       setState({
-  //         currentUser: {
-  //           id: user.uid.toString(),
-  //           name,
-  //           email: user.email
-  //         },
-  //         isLoggedIn: true
-  //       });
-  //     });
-  // };
+  const saveUserToDB = async (user, name) => {
+    const db = await database;
+    return db
+      .collection("users")
+      .doc(user.uid.toString())
+      .set({
+        id: user.uid.toString(),
+        name,
+        email: user.email
+      })
+      .then(() => {
+        setState({
+          currentUser: {
+            id: user.uid.toString(),
+            name,
+            email: user.email
+          },
+          isLoggedIn: true
+        });
+      });
+  };
 
   const signup = (email, password, userName) => {
     return auth
       .createUserWithEmailAndPassword(email, password)
       .then(response => {
-        // // We want to save the user to our own collection with custom attributes for us
-        // saveUserToDB(response.user, userName);
+        // We want to save the user to our own collection with custom attributes for us
+        saveUserToDB(response.user, userName);
         return response.user;
       });
   };

@@ -1,8 +1,9 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import useInputState from '../hooks/useInputState';
-
+import { database } from '../firebase';
+import { useSession } from '../store/Session';
 
 import { withStyles } from '@material-ui/styles';
 import styles from '../styles/createEstimateStyles';
@@ -18,17 +19,30 @@ function CreateEstimateForm(props) {
   const [name, handleChangeName, resetName] = useInputState('');
   const [address, handleChangeAddress, resetAddress] = useInputState('');
   const [note, handleChangeNote, resetNote] = useInputState('');
+  const { currentUser } = useSession();
 
   const { classes, dispatch } = props;
   const history = useHistory();
-  const id = uuid()
+  const id = uuid();
+
+  const saveToDb = async () => {
+    const db = await database;
+    return db.collection('estimates').doc(id.toString()).set({
+      id: id.toString(),
+      userId: currentUser.uid.toString(),
+      name,
+      address,
+      note
+    });
+  };
 
   const handleSubmit = () => {
     dispatch({ type: 'ADD', id, name, address, note });
+    saveToDb();
     resetName();
     resetAddress();
     resetNote();
-    history.push(`/estimate/${id}`)
+    history.push(`/estimate/${id}`);
   };
 
   return (
@@ -73,8 +87,8 @@ function CreateEstimateForm(props) {
           </Grid>
           <Grid item xs={12}>
             <TextareaAutosize
-            value={note}
-            onChange={handleChangeNote}
+              value={note}
+              onChange={handleChangeNote}
               className={classes.textArea}
               aria-label="minimum height"
               rowsMin={5}
