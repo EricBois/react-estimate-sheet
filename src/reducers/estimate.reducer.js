@@ -27,7 +27,6 @@ const reducer = (state, action) => {
           : estimate
       );
     case 'EDITMEASURE':
-      console.log(action.index);
       return state.map((estimate) =>
         estimate.id === action.id
           ? {
