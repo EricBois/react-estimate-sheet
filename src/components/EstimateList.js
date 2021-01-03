@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import useToggleState from '../hooks/useToggleState';
 import EditEstimateForm from './EditEstimateForm';
 import { useHistory } from 'react-router-dom';
-import { database } from '../firebase';
+import useDb from '../store/Db';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -17,6 +17,7 @@ export default function EstimateList(props) {
   const { estimate, dispatch } = props;
   const [isEditing, toggle] = useToggleState(false);
   const history = useHistory();
+  const { deleteEstimate } = useDb();
 
   const handleClick = (id) => {
     history.push(`/estimate/${id}`);
@@ -25,9 +26,8 @@ export default function EstimateList(props) {
     dispatch({ type: 'REMOVE', id: id });
     deleteFromDb();
   };
-  const deleteFromDb = async () => {
-    const db = await database;
-    return db.collection('estimates').doc(estimate.id.toString()).delete()
+  const deleteFromDb =() => {
+    deleteEstimate(estimate.id)
   };
   return (
     <Fragment>

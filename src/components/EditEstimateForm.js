@@ -1,6 +1,6 @@
 import React from 'react';
 import useInputState from '../hooks/useInputState';
-import { database } from '../firebase';
+import useDb from '../store/Db';
 import { withStyles } from '@material-ui/styles';
 import styles from '../styles/createEstimateStyles';
 
@@ -18,6 +18,7 @@ function EditEstimateForm(props) {
     estimate.address
   );
   const [note, handleChangeNote, resetNote] = useInputState(estimate.note);
+  const { editEstimate } = useDb();
 
   const handleSubmitForm = () => {
     dispatch({ type: 'EDIT', id: estimate.id, name, address, note });
@@ -27,13 +28,8 @@ function EditEstimateForm(props) {
     toggleEditForm();
   };
 
-  const editDocFirestore = async () => {
-    const db = await database;
-    return db.collection('estimates').doc(estimate.id.toString()).update({
-      name,
-      address,
-      note,
-    });
+  const editDocFirestore = () => {
+    editEstimate(estimate.id, name,address, note)
   };
 
   return (
