@@ -50,7 +50,7 @@ function HoursForm(props) {
     return () => {
       ac.abort();
     };
-  }, [estimate.hours]);
+  }, [estimate.hours, estimate.id]);
   return (
     <Fragment>
       <Paper>

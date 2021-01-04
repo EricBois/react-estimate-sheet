@@ -44,7 +44,7 @@ function MaterialForm(props) {
     return () => {
       ac.abort();
     };
-  }, [estimate.material]);
+  }, [estimate.material, estimate.id]);
 
   let totalMats = () => {
     let total = 0;

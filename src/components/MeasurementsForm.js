@@ -58,7 +58,7 @@ function MeasurementsForm(props) {
     return () => {
       ac.abort();
     };
-  }, [estimate.measures]);
+  }, [estimate.measures, estimate.id]);
   return (
     <Fragment>
       <Paper>
