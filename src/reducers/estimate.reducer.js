@@ -8,9 +8,9 @@ const reducer = (state, action) => {
           name: action.name,
           address: action.address,
           note: action.note,
-          measures: [],
-          hours: [],
-          material: [],
+          measures: action.measures || [],
+          hours: action.hours || [],
+          material: action.material || [],
         },
       ];
     case 'REMOVE':
@@ -68,7 +68,6 @@ const reducer = (state, action) => {
           : estimate
       );
     case 'EDITHOURS':
-      console.log(action.index);
       return state.map((estimate) =>
         estimate.id === action.id
           ? {
@@ -95,7 +94,6 @@ const reducer = (state, action) => {
           : estimate
       );
     case 'EDITMATERIAL':
-      console.log(action.index);
       return state.map((estimate) =>
         estimate.id === action.id
           ? {

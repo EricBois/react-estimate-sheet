@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import useInputState from '../hooks/useInputState';
+import { database } from '../firebase';
 import MeasureList from './MeasureList';
 import { withStyles } from '@material-ui/styles';
 
@@ -42,6 +43,22 @@ function MeasurementsForm(props) {
     );
     return total;
   };
+  useEffect(() => {
+    const ac = new AbortController();
+    // sync material with db
+    const editEstimate = async () => {
+      return await database
+        .collection('estimates')
+        .doc(estimate.id.toString())
+        .update({
+          measures: estimate.measures,
+        });
+    };
+    editEstimate();
+    return () => {
+      ac.abort();
+    };
+  }, [estimate.measures]);
   return (
     <Fragment>
       <Paper>

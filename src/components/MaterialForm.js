@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import useInputState from '../hooks/useInputState';
 import MaterialList from './MaterialList';
+import { database } from '../firebase';
 import { withStyles } from '@material-ui/styles';
 
 import Button from '@material-ui/core/Button';
@@ -14,7 +15,6 @@ import styles from '../styles/measurementsStyles';
 
 function MaterialForm(props) {
   const { classes, dispatch, estimate } = props;
-
   const [item, handleChangeItem, resetItem] = useInputState('');
   const [quantity, handleChangeQuantity, resetQuantity] = useInputState('');
   const [price, handleChangePrice, resetPrice] = useInputState('0');
@@ -29,6 +29,23 @@ function MaterialForm(props) {
     resetQuantity();
     resetPrice();
   };
+  useEffect(() => {
+    const ac = new AbortController();
+    // sync material with db
+    const editEstimate = async () => {
+      return await database
+        .collection('estimates')
+        .doc(estimate.id.toString())
+        .update({
+          material: estimate.material,
+        });
+    };
+    editEstimate();
+    return () => {
+      ac.abort();
+    };
+  }, [estimate.material]);
+
   let totalMats = () => {
     let total = 0;
     estimate.material.map((x) => (total += x.quantity * x.price));

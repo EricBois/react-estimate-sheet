@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import useInputState from '../hooks/useInputState';
+import { database } from '../firebase';
 import { withStyles } from '@material-ui/styles';
 import HoursList from './HoursList';
 
@@ -34,6 +35,22 @@ function HoursForm(props) {
     estimate.hours.map((x) => (total += x.hours * x.price));
     return total;
   };
+  useEffect(() => {
+    const ac = new AbortController();
+    // sync material with db
+    const editEstimate = async () => {
+      return await database
+        .collection('estimates')
+        .doc(estimate.id.toString())
+        .update({
+          hours: estimate.hours,
+        });
+    };
+    editEstimate();
+    return () => {
+      ac.abort();
+    };
+  }, [estimate.hours]);
   return (
     <Fragment>
       <Paper>

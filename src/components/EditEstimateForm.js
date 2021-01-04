@@ -22,14 +22,19 @@ function EditEstimateForm(props) {
 
   const handleSubmitForm = () => {
     dispatch({ type: 'EDIT', id: estimate.id, name, address, note });
+    editForm();
     resetName();
     resetAddress();
     resetNote();
     toggleEditForm();
   };
 
-  const editDocFirestore = () => {
-    editEstimate(estimate.id, name,address, note)
+  const editForm = () => {
+    const ac = new AbortController();
+    editEstimate(estimate.id, {name, address, note})
+    return () => {
+      ac.abort();
+    };
   };
 
   return (
@@ -51,7 +56,6 @@ function EditEstimateForm(props) {
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmitForm();
-          editDocFirestore();
         }}
       >
         <Grid container justify="center" spacing={2}>
@@ -94,12 +98,7 @@ function EditEstimateForm(props) {
             </Button>
           </Grid>
           <Grid item xs={6}>
-            <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-              type="submit"
-            >
+            <Button color="primary" variant="contained" fullWidth type="submit">
               Edit
             </Button>
           </Grid>

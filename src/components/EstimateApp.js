@@ -5,7 +5,7 @@ import CreateEstimateForm from './CreateEstimateForm';
 import NavBar from './NavBar';
 import Estimate from './Estimate';
 import estimateReducer from '../reducers/estimate.reducer';
-import { database } from "../firebase";
+import { database } from '../firebase';
 import { useSession } from '../store/Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
@@ -15,24 +15,30 @@ function App() {
   const [estimates, dispatch] = useReducer(estimateReducer, []);
 
   useEffect(() => {
-    const fetchData = async() => {
+    const ac = new AbortController();
+    const fetchData = async () => {
       try {
-
         if (currentUser.uid) {
-          await database.collection('estimates').where("userId", "==", currentUser.uid).get().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
+          await database
+            .collection('estimates')
+            .where('userId', '==', currentUser.uid)
+            .get()
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 dispatch({ type: 'ADD', ...doc.data() });
+              });
             });
-          })
         }
-        
-      } catch(e) {
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
     };
     fetchData();
-  }, [currentUser])
+    return () => {
+      ac.abort();
+    };
+  }, [currentUser]);
 
   function findEstimate(id) {
     return estimates.find(function (estimate) {
@@ -42,7 +48,13 @@ function App() {
 
   if (isLoading) {
     return (
-      <Grid direction="column" alignItems="center" justify="center" style={{ minHeight: '100vh' }} container>
+      <Grid
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: '100vh' }}
+        container
+      >
         <Grid item xs={12}>
           <CircularProgress />
         </Grid>
@@ -52,35 +64,35 @@ function App() {
 
   return (
     <Fragment>
-        <Route path="/">
-          <NavBar isLoggedIn={isLoggedIn} />
-          <Switch>
-            <Route exact path="/create">
-              <CreateEstimateForm
-                estimates={estimates}
-                dispatch={(props) => dispatch(props)}
-              />
-            </Route>
-
-            <Route exact path="/">
-              <Estimator
-                estimates={estimates}
-                dispatch={(props) => dispatch(props)}
-              />
-            </Route>
-
-            <Route
-              exact
-              path="/estimate/:id"
-              render={(routeProps) => (
-                <Estimate
-                  estimate={findEstimate(routeProps.match.params.id)}
-                  dispatch={(props) => dispatch(props)}
-                />
-              )}
+      <Route path="/">
+        <NavBar isLoggedIn={isLoggedIn} />
+        <Switch>
+          <Route exact path="/create">
+            <CreateEstimateForm
+              estimates={estimates}
+              dispatch={(props) => dispatch(props)}
             />
-          </Switch>
-        </Route>
+          </Route>
+
+          <Route exact path="/">
+            <Estimator
+              estimates={estimates}
+              dispatch={(props) => dispatch(props)}
+            />
+          </Route>
+
+          <Route
+            exact
+            path="/estimate/:id"
+            render={(routeProps) => (
+              <Estimate
+                estimate={findEstimate(routeProps.match.params.id)}
+                dispatch={(props) => dispatch(props)}
+              />
+            )}
+          />
+        </Switch>
+      </Route>
     </Fragment>
   );
 }

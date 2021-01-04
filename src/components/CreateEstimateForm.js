@@ -26,7 +26,7 @@ function CreateEstimateForm(props) {
   const { addEstimate } = useDb();
 
   const saveToDb = () => {
-    addEstimate(id, name,address, note)
+    addEstimate(id, {name,address, note})
   }
 
   const handleSubmit = () => {
