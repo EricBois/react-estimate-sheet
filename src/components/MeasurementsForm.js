@@ -91,18 +91,18 @@ function MeasurementsForm(props) {
                   Add Zone
                 </Button>
               )}
-              {inputZone && 
-              <Button
-              onClick={() => handleClickInputZone()}
-              color="secondary"
-              variant="outlined"
-              fullWidth
-            >
-              Cancel
-            </Button>
-              }
+              {inputZone && (
+                <Button
+                  onClick={() => handleClickInputZone()}
+                  color="secondary"
+                  variant="outlined"
+                  fullWidth
+                >
+                  Cancel
+                </Button>
+              )}
             </Grid>
-            {!inputZone && (
+            {!inputZone ? (
               <Fragment>
                 <Grid item xs={4}>
                   <TextField
@@ -137,8 +137,7 @@ function MeasurementsForm(props) {
                   />
                 </Grid>
               </Fragment>
-            )}
-            {inputZone && (
+            ) : (
               <Grid item xs={12}>
                 <TextField
                   autoFocus
