@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import useInputState from '../hooks/useInputState';
 import { database } from '../firebase';
 import MeasureList from './MeasureList';
@@ -19,6 +19,7 @@ function MeasurementsForm(props) {
   const [roomLength, handleChangeLength, resetLength] = useInputState('');
   const [sqfPrice, handleChangeSqfPrice, resetSqfPrice] = useInputState('0');
   const [roomWidth, handleChangeWidth, resetWidth] = useInputState('');
+  const [inputZone, setInputZone] = useState(false);
 
   const handleSubmitMeasure = () => {
     return dispatch({
@@ -59,6 +60,9 @@ function MeasurementsForm(props) {
       ac.abort();
     };
   }, [estimate.measures, estimate.id]);
+  const handleClickInputZone = () => {
+    setInputZone(!inputZone);
+  };
   return (
     <Fragment>
       <Paper>
@@ -66,6 +70,7 @@ function MeasurementsForm(props) {
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmitMeasure();
+            setInputZone(false);
             resetLength();
             resetWidth();
             resetSqfPrice();
@@ -76,46 +81,78 @@ function MeasurementsForm(props) {
               <Typography align="center" variant="h6">
                 Measurements
               </Typography>
-              <Typography
-                align="center"
-                className={classes.title}
-                variant="subtitle2"
-              >
-                *Length field can be used for total sqf or name as well.
-              </Typography>
+              {!inputZone && (
+                <Button
+                  onClick={() => handleClickInputZone()}
+                  color="secondary"
+                  variant="outlined"
+                  fullWidth
+                >
+                  Add Zone
+                </Button>
+              )}
+              {inputZone && 
+              <Button
+              onClick={() => handleClickInputZone()}
+              color="secondary"
+              variant="outlined"
+              fullWidth
+            >
+              Cancel
+            </Button>
+              }
             </Grid>
-            <Grid item xs={4}>
-              <TextField
-                autoFocus
-                variant="outlined"
-                required
-                className={classes.textfield}
-                value={roomLength}
-                onChange={handleChangeLength}
-                margin="normal"
-                label="Length"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                variant="outlined"
-                value={roomWidth}
-                onChange={handleChangeWidth}
-                margin="normal"
-                type="number"
-                label="Width"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                variant="outlined"
-                value={sqfPrice}
-                onChange={handleChangeSqfPrice}
-                margin="normal"
-                type="number"
-                label="Sqf Price"
-              />
-            </Grid>
+            {!inputZone && (
+              <Fragment>
+                <Grid item xs={4}>
+                  <TextField
+                    autoFocus
+                    variant="outlined"
+                    required
+                    className={classes.textfield}
+                    value={roomLength}
+                    onChange={handleChangeLength}
+                    margin="normal"
+                    label="Length"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    variant="outlined"
+                    value={roomWidth}
+                    onChange={handleChangeWidth}
+                    margin="normal"
+                    type="number"
+                    label="Width"
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    variant="outlined"
+                    value={sqfPrice}
+                    onChange={handleChangeSqfPrice}
+                    margin="normal"
+                    type="number"
+                    label="Sqf Price"
+                  />
+                </Grid>
+              </Fragment>
+            )}
+            {inputZone && (
+              <Grid item xs={12}>
+                <TextField
+                  autoFocus
+                  variant="outlined"
+                  required
+                  fullWidth
+                  className={classes.textfield}
+                  value={roomLength}
+                  onChange={handleChangeLength}
+                  margin="normal"
+                  label="Zone Name"
+                />
+              </Grid>
+            )}
             <Grid item xs={12}>
               <Button
                 color="primary"
