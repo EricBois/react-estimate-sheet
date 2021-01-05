@@ -44,7 +44,7 @@ function Estimate(props) {
   }
 
   return (
-    <Grid container spacing={3}>
+    <Grid container>
       {estimate && (
         <Grid item xs={12}>
           <Paper square className={classes.root}>
