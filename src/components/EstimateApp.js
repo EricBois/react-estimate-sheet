@@ -18,7 +18,7 @@ function App() {
     const ac = new AbortController();
     const fetchData = async () => {
       try {
-        if (currentUser.uid) {
+        if (currentUser.uid && estimates.length === 0) {
           await database
             .collection('estimates')
             .where('userId', '==', currentUser.uid)
@@ -38,7 +38,7 @@ function App() {
     return () => {
       ac.abort();
     };
-  }, [currentUser]);
+  }, [currentUser, estimates]);
 
   function findEstimate(id) {
     return estimates.find(function (estimate) {
