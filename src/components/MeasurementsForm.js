@@ -113,6 +113,7 @@ function MeasurementsForm(props) {
                     value={roomLength}
                     onChange={handleChangeLength}
                     margin="normal"
+                    type="number"
                     label="Length"
                   />
                 </Grid>
