@@ -3,7 +3,7 @@ const styles = {
     flexGrow: 1,
     maxWidth: 650,
     margin: 'auto',
-    marginTop: '-3vh',
+    marginTop: '-2vh',
     marginBottom: '-1.5vh'
   },
   container: {
