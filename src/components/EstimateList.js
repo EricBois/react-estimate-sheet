@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
+
 export default function EstimateList(props) {
   const { estimate, dispatch } = props;
   const [isEditing, toggle] = useToggleState(false);
@@ -26,8 +27,8 @@ export default function EstimateList(props) {
     dispatch({ type: 'REMOVE', id: id });
     deleteFromDb();
   };
-  const deleteFromDb =() => {
-    deleteEstimate(estimate.id)
+  const deleteFromDb = () => {
+    deleteEstimate(estimate.id);
   };
   return (
     <Fragment>
@@ -44,10 +45,8 @@ export default function EstimateList(props) {
               <HomeWorkIcon />
             </ListItemIcon>
             <ListItemText
-              primary={`${estimate.name} ${estimate.address ? '@' : ''} ${
-                estimate.address
-              }`}
-              secondary={`${estimate.note}`}
+              primary={estimate.name}
+              secondary={`${estimate.address}`}
             />
             <ListItemSecondaryAction>
               <IconButton aria-label="edit" onClick={toggle}>
