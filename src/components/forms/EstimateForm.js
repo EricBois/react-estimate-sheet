@@ -1,13 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import useInputState from '../hooks/useInputState';
-import useDb from '../store/Db';
-
+import useInputState from '../../hooks/useInputState';
 
 import { withStyles } from '@material-ui/styles';
-import styles from '../styles/createEstimateStyles';
-
+import styles from '../../styles/createEstimateStyles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -15,41 +12,26 @@ import TextField from '@material-ui/core/TextField';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
 
-function CreateEstimateForm(props) {
-  const [name, handleChangeName, resetName] = useInputState('');
-  const [address, handleChangeAddress, resetAddress] = useInputState('');
-  const [note, handleChangeNote, resetNote] = useInputState('');
+function EstimateForm(props) {
+  const { classes, mode, saveToDb, estimate, toggleEditForm } = props;
+  const [name, handleChangeName, resetName] = useInputState(estimate.name);
+  const [address, handleChangeAddress, resetAddress] = useInputState(estimate.address);
+  const [note, handleChangeNote, resetNote] = useInputState(estimate.note);
 
-  const { classes, dispatch } = props;
   const history = useHistory();
   const id = uuid();
-  const { addEstimate } = useDb();
-
-  const saveToDb = () => {
-    addEstimate(id, {name,address, note})
-  }
 
   const handleSubmit = () => {
-    dispatch({ type: 'ADD', id, name, address, note });
-    saveToDb();
+    saveToDb(id, name, address, note);
     resetName();
     resetAddress();
     resetNote();
-    history.push(`/estimate/${id}`);
+    
+    !toggleEditForm ? history.push(`/estimate/${id}`) : toggleEditForm()
   };
 
   return (
-    <Paper
-      elevation={3}
-      style={{
-        padding: '0px 15px',
-        margin: 'auto',
-        maxWidth: '850px',
-        height: '80vh',
-        backgroundColor: '#fafafa',
-        textAlign: 'center',
-      }}
-    >
+    <Paper elevation={3} className={classes.paper}>
       <Typography className={classes.title} variant="h5">
         Client Info
       </Typography>
@@ -65,7 +47,7 @@ function CreateEstimateForm(props) {
               value={name}
               onChange={handleChangeName}
               margin="normal"
-              label="Name"
+              label="Client Name"
               fullWidth
             />
           </Grid>
@@ -88,11 +70,36 @@ function CreateEstimateForm(props) {
               placeholder="*OPTIONAL, Describe work / project"
             />
           </Grid>
-          <Button type="submit">Create</Button>
+          {!toggleEditForm ? (
+            <Button type="submit">{mode}</Button>
+          ) : (
+            <>
+              <Grid item xs={6}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  fullWidth
+                  onClick={() => toggleEditForm()}
+                >
+                  CANCEL
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  fullWidth
+                  type="submit"
+                >
+                  {mode}
+                </Button>
+              </Grid>
+            </>
+          )}
         </Grid>
       </form>
     </Paper>
   );
 }
 
-export default withStyles(styles)(CreateEstimateForm);
+export default withStyles(styles)(EstimateForm);

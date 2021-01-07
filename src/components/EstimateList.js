@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import useToggleState from '../hooks/useToggleState';
-import EditEstimateForm from './EditEstimateForm';
+import EstimateForm from './forms/EstimateForm';
 import { useHistory } from 'react-router-dom';
 import useDb from '../store/Db';
 
@@ -18,7 +18,7 @@ export default function EstimateList(props) {
   const { estimate, dispatch } = props;
   const [isEditing, toggle] = useToggleState(false);
   const history = useHistory();
-  const { deleteEstimate } = useDb();
+  const { deleteEstimate, editEstimate } = useDb();
 
   const handleClick = (id) => {
     history.push(`/estimate/${id}`);
@@ -30,14 +30,20 @@ export default function EstimateList(props) {
   const deleteFromDb = () => {
     deleteEstimate(estimate.id);
   };
+  const saveToDb = (id, name, address, note ) => {
+    dispatch({ type: 'EDIT', id: estimate.id, name, address, note });
+    editEstimate(estimate.id, {name, address, note})
+    
+  };
   return (
     <Fragment>
       {isEditing ? (
-        <EditEstimateForm
-          estimate={estimate}
-          toggleEditForm={toggle}
-          dispatch={(props) => dispatch(props)}
-        />
+        <EstimateForm
+        mode="Edit"
+        estimate={estimate}
+        saveToDb={saveToDb}
+        toggleEditForm={toggle}
+      />
       ) : (
         <>
           <ListItem onClick={() => handleClick(estimate.id)} button>

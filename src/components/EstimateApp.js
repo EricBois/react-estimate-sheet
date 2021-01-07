@@ -1,7 +1,8 @@
 import React, { Fragment, useEffect, useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Estimator from './Estimator';
-import CreateEstimateForm from './CreateEstimateForm';
+import EstimateForm from './forms/EstimateForm';
+import useDb from '../store/Db';
 import NavBar from './NavBar';
 import Estimate from './Estimate';
 import estimateReducer from '../reducers/estimate.reducer';
@@ -13,6 +14,8 @@ import Grid from '@material-ui/core/Grid';
 function App() {
   const { isLoggedIn, isLoading, currentUser } = useSession();
   const [estimates, dispatch] = useReducer(estimateReducer, []);
+  const { addEstimate } = useDb();
+  const estimate = {name: '', address: '', note: ''}
 
   useEffect(() => {
     const ac = new AbortController();
@@ -61,6 +64,10 @@ function App() {
       </Grid>
     );
   }
+  const saveToDb = (id, name, address, note) => {
+    dispatch({ type: 'ADD', id, name, address, note });
+    addEstimate(id, {name,address, note})
+  }
 
   return (
     <Fragment>
@@ -68,8 +75,11 @@ function App() {
         <NavBar isLoggedIn={isLoggedIn} />
         <Switch>
           <Route exact path="/create">
-            <CreateEstimateForm
-              estimates={estimates}
+            <EstimateForm
+              estimate={estimate}
+              mode="Create"
+              saveToDb={saveToDb}
+              toggleEditForm={false}
               dispatch={(props) => dispatch(props)}
             />
           </Route>
