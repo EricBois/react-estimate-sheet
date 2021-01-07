@@ -1,29 +1,31 @@
 import React from 'react';
-import useInputState from '../hooks/useInputState';
+import useInputState from '../../hooks/useInputState';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
-function EditMaterialForm(props) {
-  const { material, index, dispatch, estimate, toggleEditForm } = props;
+function EditHoursForm(props) {
+  const { hour, toggleEditForm, index, dispatch, estimate } = props;
 
-  const [item, handleChangeItem] = useInputState(material.item);
-  const [quantity, handleChangeQuantity] = useInputState(material.quantity);
-  const [price, handleChangePrice] = useInputState(material.price);
-  const handleEditMaterial = () => {
+  const [item, handleChangeItem] = useInputState(hour.item);
+  const [hours, handleChangeHours] = useInputState(hour.hours);
+  const [price, handleChangePrice] = useInputState(hour.price);
+
+  const handleEditHours = () => {
     return dispatch({
-      type: 'EDITMATERIAL',
+      type: 'EDITHOURS',
       id: estimate.id,
       index: index,
-      material: { item, quantity, price },
+      hours: { item, hours, price },
     });
   };
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleEditMaterial();
+        handleEditHours();
       }}
     >
       <Grid container spacing={1}>
@@ -41,18 +43,19 @@ function EditMaterialForm(props) {
         <Grid item xs={4}>
           <TextField
             variant="outlined"
-            value={quantity}
+            value={hours}
             required
-            onChange={handleChangeQuantity}
+            onChange={handleChangeHours}
             margin="normal"
             type="number"
-            label="Quantity"
+            label="Hours"
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             variant="outlined"
             value={price}
+            required
             onChange={handleChangePrice}
             margin="normal"
             type="number"
@@ -70,13 +73,7 @@ function EditMaterialForm(props) {
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Button
-            color="primary"
-            variant="contained"
-            fullWidth
-            type="submit"
-            size="small"
-          >
+          <Button color="primary" variant="contained" type="submit" fullWidth>
             EDIT
           </Button>
         </Grid>
@@ -84,5 +81,4 @@ function EditMaterialForm(props) {
     </form>
   );
 }
-
-export default EditMaterialForm;
+export default EditHoursForm;

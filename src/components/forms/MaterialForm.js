@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
-import useInputState from '../hooks/useInputState';
-import MaterialList from './MaterialList';
-import { database } from '../firebase';
+import useInputState from '../../hooks/useInputState';
+import MaterialList from '../MaterialList';
+import { database } from '../../firebase';
 import { withStyles } from '@material-ui/styles';
 
 import Button from '@material-ui/core/Button';
@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import styles from '../styles/measurementsStyles';
+import styles from '../../styles/measurementsStyles';
 
 function MaterialForm(props) {
   const { classes, dispatch, estimate } = props;

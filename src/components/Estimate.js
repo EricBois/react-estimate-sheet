@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import MeasurementsForm from './MeasurementsForm';
+import MeasurementsForm from './forms/MeasurementsForm';
 import HoursForm from './HoursForm';
-import MaterialForm from './MaterialForm';
+import MaterialForm from './forms/MaterialForm';
 import Result from './Result';
 
 import { withStyles } from '@material-ui/styles';
