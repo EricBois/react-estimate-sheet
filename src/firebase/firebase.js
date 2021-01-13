@@ -7,6 +7,7 @@ import firebaseConfig from "./config";
 class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
+    app.firestore().enablePersistence({ synchronizeTabs: true })
     this.auth = app.auth();
     this.db = app.firestore();
   }
