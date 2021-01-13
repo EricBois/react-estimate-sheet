@@ -51,7 +51,8 @@ function HoursForm(props) {
     return () => {
       ac.abort();
     };
-  }, [estimate.hours, estimate.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [estimate.hours]);
   return (
     <Fragment>
       <Paper>
