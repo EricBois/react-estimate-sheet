@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React from 'react'
 import useInputState from '../hooks/useInputState';
 
 import Typography from '@material-ui/core/Typography';
