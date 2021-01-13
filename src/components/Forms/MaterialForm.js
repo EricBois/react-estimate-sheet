@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useContext } from 'react';
 import useInputState from '../../hooks/useInputState';
 import MaterialList from '../MaterialList';
-import { database } from '../../firebase';
+import FirebaseContext from "../../firebase/context";
 import { withStyles } from '@material-ui/styles';
 
 import Button from '@material-ui/core/Button';
@@ -15,6 +15,8 @@ import styles from '../../styles/measurementsStyles';
 
 function MaterialForm(props) {
   const { classes, dispatch, estimate } = props;
+  const { firebase } = useContext(FirebaseContext);
+
   const [item, handleChangeItem, resetItem] = useInputState('');
   const [quantity, handleChangeQuantity, resetQuantity] = useInputState('');
   const [price, handleChangePrice, resetPrice] = useInputState('0');
@@ -33,7 +35,7 @@ function MaterialForm(props) {
     const ac = new AbortController();
     // sync material with db
     const editEstimate = async () => {
-      return await database
+      return await firebase.db
         .collection('estimates')
         .doc(estimate.id.toString())
         .update({

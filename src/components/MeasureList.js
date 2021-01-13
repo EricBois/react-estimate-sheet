@@ -1,6 +1,6 @@
 import React from 'react';
 import useToggleState from '../hooks/useToggleState';
-import EditMeasureForm from './forms/EditMeasureForm';
+import EditMeasureForm from './Forms/EditMeasureForm';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';

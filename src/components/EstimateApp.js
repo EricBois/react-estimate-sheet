@@ -1,30 +1,28 @@
-import React, { Fragment, useEffect, useReducer } from 'react';
+import React, { Fragment, useEffect, useReducer, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import FirebaseContext from "../firebase/context";
 import Estimator from './Estimator';
-import EstimateForm from './forms/EstimateForm';
-import useDb from '../store/Db';
+import EstimateForm from './Forms/EstimateForm';
+import Profile from './Profile';
 import NavBar from './NavBar';
 import Estimate from './Estimate';
 import estimateReducer from '../reducers/estimate.reducer';
-import { database } from '../firebase';
-import { useSession } from '../store/Session';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
 
-function App() {
-  const { isLoggedIn, isLoading, currentUser } = useSession();
+
+function EstimateApp(props) {
+  const { user } = props;
   const [estimates, dispatch] = useReducer(estimateReducer, []);
-  const { addEstimate } = useDb();
-  const estimate = {name: '', address: '', note: ''}
-
+  const { firebase } = useContext(FirebaseContext);
+  const estimate = { name: '', address: '', note: '' };
+  
   useEffect(() => {
     const ac = new AbortController();
-    const fetchData = async () => {
+    async function fetchData() {
       try {
-        if (currentUser.uid && estimates.length === 0) {
-          await database
+        if (user.uid && estimates.length === 0) {
+          await firebase.db
             .collection('estimates')
-            .where('userId', '==', currentUser.uid)
+            .where('userId', '==', user.uid)
             .get()
             .then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
@@ -41,7 +39,7 @@ function App() {
     return () => {
       ac.abort();
     };
-  }, [currentUser, estimates]);
+  }, [user, estimates]);
 
   function findEstimate(id) {
     return estimates.find(function (estimate) {
@@ -49,30 +47,15 @@ function App() {
     });
   }
 
-  if (isLoading) {
-    return (
-      <Grid
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: '100vh' }}
-        container
-      >
-        <Grid item xs={12}>
-          <CircularProgress />
-        </Grid>
-      </Grid>
-    );
-  }
   const saveToDb = (id, name, address, note) => {
     dispatch({ type: 'ADD', id, name, address, note });
-    addEstimate(id, {name,address, note})
-  }
+    firebase.save(id, { name, address, note }, user);
+  };
 
   return (
     <Fragment>
       <Route path="/">
-        <NavBar isLoggedIn={isLoggedIn} />
+        <NavBar isLoggedIn={user} />
         <Switch>
           <Route exact path="/create">
             <EstimateForm
@@ -91,6 +74,10 @@ function App() {
             />
           </Route>
 
+          <Route exact path="/profile">
+            {/* <Profile profile={profile}/> */}
+          </Route>
+
           <Route
             exact
             path="/estimate/:id"
@@ -107,4 +94,4 @@ function App() {
   );
 }
 
-export default App;
+export default EstimateApp;

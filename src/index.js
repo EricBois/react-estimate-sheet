@@ -1,21 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import Store from "./store";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-import { initialState as auth } from "./store/Session";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Store.Provider initialState={auth}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    </Store.Provider>
-  </React.StrictMode>,
+  <App />,
   document.getElementById('root')
 );
 

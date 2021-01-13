@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../store/Auth';
 import useInputState from '../hooks/useInputState';
+import firebase from "../firebase";
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -9,21 +9,18 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 function SignIn(props) {
-  const { signin } = useAuth();
+
   const [email, setEmail] = useInputState('');
   const [password, setPassword] = useInputState('');
   const { toggle } = props;
 
-  function handleSignin() {
-    signin(email, password);
-  }
 
   return (
     <Paper style={{minHeight: '100vh', maxWidth: '400px', margin: 'auto'}}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          handleSignin();
+          firebase.login(email, password)
         }}
       >
         <Grid container  spacing={2}>

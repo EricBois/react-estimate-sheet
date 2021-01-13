@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 import useInputState from '../../hooks/useInputState';
-import { database } from '../../firebase';
+import FirebaseContext from "../../firebase/context";
 import MeasureList from '../MeasureList';
 import { withStyles } from '@material-ui/styles';
 
@@ -15,6 +15,7 @@ import styles from '../../styles/measurementsStyles';
 
 function MeasurementsForm(props) {
   const { classes, dispatch, estimate } = props;
+  const { firebase } = useContext(FirebaseContext);
 
   const [roomLength, handleChangeLength, resetLength] = useInputState('');
   const [sqfPrice, handleChangeSqfPrice, resetSqfPrice] = useInputState('0');
@@ -48,7 +49,7 @@ function MeasurementsForm(props) {
     const ac = new AbortController();
     // sync material with db
     const editEstimate = async () => {
-      return await database
+      return await firebase.db
         .collection('estimates')
         .doc(estimate.id.toString())
         .update({

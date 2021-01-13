@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useContext } from 'react';
 import useInputState from '../hooks/useInputState';
-import { database } from '../firebase';
+import FirebaseContext from "../firebase/context";
 import { withStyles } from '@material-ui/styles';
 import HoursList from './HoursList';
 
@@ -15,6 +15,7 @@ import styles from '../styles/measurementsStyles';
 
 function HoursForm(props) {
   const { classes, dispatch, estimate } = props;
+  const { firebase } = useContext(FirebaseContext);
 
   const [item, handleChangeItem, resetItem] = useInputState('');
   const [hours, handleChangeHours, resetHours] = useInputState('');
@@ -39,7 +40,7 @@ function HoursForm(props) {
     const ac = new AbortController();
     // sync material with db
     const editEstimate = async () => {
-      return await database
+      return await firebase.db
         .collection('estimates')
         .doc(estimate.id.toString())
         .update({

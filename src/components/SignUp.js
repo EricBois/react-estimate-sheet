@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAuth } from '../store/Auth';
 import useInputState from '../hooks/useInputState';
 
 import Button from '@material-ui/core/Button';
@@ -7,16 +6,16 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import firebase from "../firebase";
 
 function SignUp(props) {
-  const { signup } = useAuth();
   const [email, setEmail] = useInputState('');
   const [password, setPassword] = useInputState('');
   const [name, setName] = useInputState('');
   const { toggle } = props;
 
   function handleSignup() {
-    signup(email, password, name);
+    firebase.register(name, email, password);
   }
 
   return (

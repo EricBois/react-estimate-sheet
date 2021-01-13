@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../store/Auth';
+import firebase from "../firebase";
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -89,7 +89,6 @@ export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const { signout } = useAuth();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -135,7 +134,7 @@ export default function PersistentDrawerLeft(props) {
                 Estimate Sheet
               </Typography>
               <Button
-                onClick={() => signout()}
+                onClick={() => firebase.logout()}
                 className={classes.button}
                 color="inherit"
               >

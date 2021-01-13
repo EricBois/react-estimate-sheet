@@ -1,6 +1,6 @@
 import React from 'react';
 import useToggleState from '../hooks/useToggleState';
-import EditHoursForm from './forms/EditHoursForm';
+import EditHoursForm from './Forms/EditHoursForm';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
