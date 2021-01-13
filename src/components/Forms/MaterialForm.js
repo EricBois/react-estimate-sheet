@@ -46,7 +46,8 @@ function MaterialForm(props) {
     return () => {
       ac.abort();
     };
-  }, [estimate.material, estimate.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [estimate.material]);
 
   let totalMats = () => {
     let total = 0;

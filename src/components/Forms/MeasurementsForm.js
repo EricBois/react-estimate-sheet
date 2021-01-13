@@ -60,7 +60,8 @@ function MeasurementsForm(props) {
     return () => {
       ac.abort();
     };
-  }, [estimate.measures, estimate.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [estimate.measures]);
   const handleClickInputZone = () => {
     setInputZone(!inputZone);
   };

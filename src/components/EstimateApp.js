@@ -17,7 +17,7 @@ function EstimateApp(props) {
   
   useEffect(() => {
     const ac = new AbortController();
-    async function fetchData() {
+    const fetchData = async () => {
       try {
         if (user.uid && estimates.length === 0) {
           await firebase.db
@@ -32,6 +32,7 @@ function EstimateApp(props) {
             });
         }
       } catch (e) {
+        //TODO implement errors
         console.log(e);
       }
     };
@@ -39,7 +40,8 @@ function EstimateApp(props) {
     return () => {
       ac.abort();
     };
-  }, [user, estimates]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   function findEstimate(id) {
     return estimates.find(function (estimate) {
@@ -75,7 +77,7 @@ function EstimateApp(props) {
           </Route>
 
           <Route exact path="/profile">
-            {/* <Profile profile={profile}/> */}
+            <Profile profile={user}/>
           </Route>
 
           <Route
