@@ -40,6 +40,7 @@ class Firebase {
     .doc(id.toString())
     .set({
       id: id.toString(),
+      date: new Date(),
       userId: user.uid.toString(),
       measures: [],
       hours: [],

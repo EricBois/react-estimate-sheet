@@ -23,6 +23,7 @@ function EstimateApp(props) {
           await firebase.db
             .collection('estimates')
             .where('userId', '==', user.uid)
+            .orderBy("date", "desc")
             .get()
             .then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
