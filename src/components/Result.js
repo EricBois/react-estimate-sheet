@@ -1,17 +1,14 @@
 import React, { Fragment } from 'react';
 
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import { Typography } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 function Result(props) {
   const { estimate } = props;
+
   let totalSqf = () => {
     let total = 0;
     estimate.measures.map((x) =>
@@ -38,63 +35,58 @@ function Result(props) {
     estimate.material.map((x) => (total += x.quantity * x.price));
     return total;
   };
+  const cards = [
+    {
+      id: 1,
+      title: `Square Footage ${totalSqf() > 0 ? `(${totalSqf()} sqf)` : ''}`,
+      price: `$${totalSqfPrice().toFixed(2)}`,
+    },
+    { id: 2, title: 'Hourly Charge', price: `$${totalHours().toFixed(2)}` },
+    { id: 3, title: 'Material Charge', price: `$${totalMats().toFixed(2)}` },
+  ];
   return (
     <Fragment>
-      <Grid container spacing={1}>
-        <Grid item xs={6} sm={4}>
-          <List dense>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <AssignmentIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={`Square Ft: ${totalSqf()}`}
-                secondary={`Price: $${totalSqfPrice().toFixed(2)}`}
-              />
-            </ListItem>
-            ,
-          </List>
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <List dense>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <AssignmentIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={`Hourly Charge`}
-                secondary={`Price: $${totalHours().toFixed(2)}`}
-              />
-            </ListItem>
-            ,
-          </List>
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <List dense>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <AssignmentIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={`Material Charge`}
-                secondary={`Price: $${totalMats().toFixed(2)}`}
-              />
-            </ListItem>
-            ,
-          </List>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper>
-            <Typography variant="h6" align="center">
-              Grand Total: ${(totalSqfPrice() + totalHours() + totalMats()).toFixed(2)} <Typography variant="caption">+Taxes</Typography>
-            </Typography>
-          </Paper>
+      <Grid container spacing={3}>
+        {cards.map((card) => (
+          <Grid
+            style={{ backgroundColor: '#6FA3CA' }}
+            key={card.id}
+            item
+            xs={12}
+            sm={4}
+          >
+            <Card style={{ backgroundColor: '#DEEEFA' }}>
+              <CardActionArea>
+                <CardContent>
+                  <Typography align="center" variant="h6" component="h2">
+                    {card.title}
+                  </Typography>
+                  <Typography
+                    align="center"
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    {card.price}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
+        <Grid item xs={12} sm={6} style={{ margin: 'auto' }}>
+          <Card style={{ backgroundColor: '#527995', color: 'white' }}>
+            <CardActionArea>
+              <CardContent>
+                <Typography align="center" variant="h5" component="h2">
+                  Grand Total
+                </Typography>
+                <Typography align="center" variant="subtitle2" component="h2">
+                  ${(totalSqfPrice() + totalHours() + totalMats()).toFixed(2)}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
         </Grid>
       </Grid>
     </Fragment>
