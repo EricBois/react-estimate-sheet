@@ -17,7 +17,12 @@ class Firebase {
       email,
       password
     ).then(newUser => {
-      this.auth.currentUser.sendEmailVerification()
+      this.auth.currentUser.sendEmailVerification(
+        {
+          url: 'https://estimateit.ca/',
+          handleCodeInApp: true,
+        }
+      )
       firebase.db.collection('users').doc(newUser.user.uid.toString()).set({
         id: newUser.user.uid.toString(),
         name,
