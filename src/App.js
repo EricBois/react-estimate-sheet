@@ -6,16 +6,18 @@ import Welcome from './components/Welcome';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import useAuth from './components/Auth/useAuth';
+import useProfile from './components/Auth/useProfile';
 import firebase, { FirebaseContext } from './firebase/index';
 
 function App() {
   const user = useAuth();
+  const profile = useProfile();
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 500);
   }, []);
-  
+
   if (isLoading) {
     return (
       <Grid
@@ -34,10 +36,21 @@ function App() {
 
   return (
     <React.StrictMode>
-      <FirebaseContext.Provider value={{ user, firebase }}>
+      <FirebaseContext.Provider value={{ user, firebase, profile }}>
         <BrowserRouter>
           {user ? (
-            <EstimateApp user={user} />
+            user.emailVerified ? (
+              <EstimateApp user={user} />
+            ) : (
+              <Fragment>
+                <NavBar isLoggedIn={user} />
+                <Grid container>
+                  <Grid item xs={8} style={{ margin: 'auto' }}>
+                    <h2>Please Verify Your Email!</h2>
+                  </Grid>
+                </Grid>
+              </Fragment>
+            )
           ) : (
             <Fragment>
               <NavBar isLoggedIn={user} />
