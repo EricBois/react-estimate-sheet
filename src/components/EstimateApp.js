@@ -16,7 +16,6 @@ function EstimateApp(props) {
   const estimate = { name: '', address: '', note: '' };
   
   useEffect(() => {
-    const ac = new AbortController();
     const fetchData = async () => {
       try {
         if (user.uid && estimates.length === 0) {
@@ -37,10 +36,7 @@ function EstimateApp(props) {
         console.log(e);
       }
     };
-    fetchData();
-    return () => {
-      ac.abort();
-    };
+    return () => fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
