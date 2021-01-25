@@ -6,6 +6,7 @@ import EstimateForm from './Forms/EstimateForm';
 import Profile from './Profile';
 import NavBar from './NavBar';
 import Estimate from './Estimate';
+import Action from './Action';
 import estimateReducer from '../reducers/estimate.reducer';
 
 
@@ -87,6 +88,11 @@ function EstimateApp(props) {
               />
             )}
           />
+          <Route
+          exact
+          path="/action">
+            <Action />
+          </Route>
         </Switch>
       </Route>
     </Fragment>
