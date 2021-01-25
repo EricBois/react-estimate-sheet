@@ -16,6 +16,7 @@ function VerifyEmail(props) {
         // Email address has been verified.
         setValidCode(true);
         setVerifiedCode(true);
+        setTimeout(() => firebase.auth.signOut(), 4000);
       },
       (error) => {
         // Code is invalid or expired. Ask the user to verify their email address

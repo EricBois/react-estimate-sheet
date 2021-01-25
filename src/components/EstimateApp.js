@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useReducer, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import FirebaseContext from "../firebase/context";
+import FirebaseContext from '../firebase/context';
 import Estimator from './Estimator';
 import EstimateForm from './Forms/EstimateForm';
 import Profile from './Profile';
@@ -8,14 +8,14 @@ import NavBar from './NavBar';
 import Estimate from './Estimate';
 import Action from './Action';
 import estimateReducer from '../reducers/estimate.reducer';
-
+import ValidateEmailPage from './ValidateEmailPage';
 
 function EstimateApp(props) {
   const { user } = props;
   const [estimates, dispatch] = useReducer(estimateReducer, []);
   const { firebase } = useContext(FirebaseContext);
   const estimate = { name: '', address: '', note: '' };
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -23,7 +23,7 @@ function EstimateApp(props) {
           await firebase.db
             .collection('estimates')
             .where('userId', '==', user.uid)
-            .orderBy("date", "desc")
+            .orderBy('date', 'desc')
             .get()
             .then(function (querySnapshot) {
               querySnapshot.forEach(function (doc) {
@@ -56,44 +56,51 @@ function EstimateApp(props) {
     <Fragment>
       <Route path="/">
         <NavBar isLoggedIn={user} />
-        <Switch>
-          <Route exact path="/create">
-            <EstimateForm
-              estimate={estimate}
-              mode="Create"
-              saveToDb={saveToDb}
-              toggleEditForm={false}
-              dispatch={(props) => dispatch(props)}
-            />
-          </Route>
-
-          <Route exact path="/">
-            <Estimator
-              estimates={estimates}
-              dispatch={(props) => dispatch(props)}
-            />
-          </Route>
-
-          <Route exact path="/profile">
-            <Profile profile={user}/>
-          </Route>
-
-          <Route
-            exact
-            path="/estimate/:id"
-            render={(routeProps) => (
-              <Estimate
-                estimate={findEstimate(routeProps.match.params.id)}
+        {user.emailVerified ? (
+          <Switch>
+            <Route exact path="/create">
+              <EstimateForm
+                estimate={estimate}
+                mode="Create"
+                saveToDb={saveToDb}
+                toggleEditForm={false}
                 dispatch={(props) => dispatch(props)}
               />
-            )}
-          />
-          <Route
-          exact
-          path="/action">
-            <Action />
-          </Route>
-        </Switch>
+            </Route>
+
+            <Route exact path="/">
+              <Estimator
+                estimates={estimates}
+                dispatch={(props) => dispatch(props)}
+              />
+            </Route>
+
+            <Route exact path="/profile">
+              <Profile profile={user} />
+            </Route>
+
+            <Route
+              exact
+              path="/estimate/:id"
+              render={(routeProps) => (
+                <Estimate
+                  estimate={findEstimate(routeProps.match.params.id)}
+                  dispatch={(props) => dispatch(props)}
+                />
+              )}
+            />
+            
+          </Switch>
+        ) : (
+          <Switch>
+            <Route exact path="/action">
+              <Action />
+            </Route>
+            <Route exact path="/">
+              <ValidateEmailPage />
+            </Route>
+          </Switch>
+        )}
       </Route>
     </Fragment>
   );

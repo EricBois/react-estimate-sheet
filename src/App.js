@@ -39,18 +39,7 @@ function App() {
       <FirebaseContext.Provider value={{ user, firebase, profile }}>
         <BrowserRouter>
           {user ? (
-            user.emailVerified ? (
-              <EstimateApp user={user} />
-            ) : (
-              <Fragment>
-                <NavBar isLoggedIn={user} />
-                <Grid container>
-                  <Grid item xs={8} style={{ margin: 'auto' }}>
-                    <h2>Please Verify Your Email!</h2>
-                  </Grid>
-                </Grid>
-              </Fragment>
-            )
+            <EstimateApp user={user} />
           ) : (
             <Fragment>
               <NavBar isLoggedIn={user} />
