@@ -37,7 +37,7 @@ function EstimateApp(props) {
         console.log(e);
       }
     };
-    return () => fetchData();
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
