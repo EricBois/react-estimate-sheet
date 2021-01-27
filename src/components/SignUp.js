@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import validationSchema from './validation/validationSchema';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -12,34 +13,6 @@ function SignUp(props) {
   const [error, setError] = useState(null);
   const { toggle } = props;
 
-  const validate = (values) => {
-    const errors = {};
-    if (!values.name) {
-      errors.name = 'Name is Required';
-    }
-    if (!values.email) {
-      errors.email = 'Email is Required';
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formik.values.email)
-    ) {
-      errors.email = 'Invalid Email Address';
-    }
-
-    if (!values.password) {
-      errors.password = 'Password is Required';
-    } else if (values.password.length <= 6) {
-      errors.password = 'Must be more than 6 characters';
-    } else if (values.password !== values.confirmPassword) {
-      errors.confirmPassword = 'Passwords does not match';
-    }
-
-    if (!values.confirmPassword) {
-      errors.confirmPassword = 'Please Confirm Password';
-    }
-
-    return errors;
-  };
-
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -47,7 +20,7 @@ function SignUp(props) {
       name: '',
       confirmPassword: '',
     },
-    validate,
+    validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
       firebase
         .register(values.name, values.email, values.password)
@@ -77,8 +50,9 @@ function SignUp(props) {
               name="name"
               size="small"
               variant="outlined"
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
             />
-            {formik.errors.name ? <div>{formik.errors.name}</div> : null}
           </Grid>
           <Grid style={{ margin: 'auto' }} item xs={10}>
             <TextField
@@ -89,8 +63,10 @@ function SignUp(props) {
               name="email"
               size="small"
               variant="outlined"
+              autoComplete="email"
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
-            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
           </Grid>
           <Grid style={{ margin: 'auto' }} item xs={10}>
             <TextField
@@ -102,10 +78,10 @@ function SignUp(props) {
               size="small"
               type="password"
               variant="outlined"
+              autoComplete="new-password"
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
-            {formik.errors.password ? (
-              <div>{formik.errors.password}</div>
-            ) : null}
           </Grid>
           <Grid style={{ margin: 'auto' }} item xs={10}>
             <TextField
@@ -117,10 +93,10 @@ function SignUp(props) {
               size="small"
               type="password"
               variant="outlined"
+              autoComplete="new-password"
+              error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+              helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
             />
-            {formik.errors.confirmPassword ? (
-              <div>{formik.errors.confirmPassword}</div>
-            ) : null}
           </Grid>
           <Grid style={{ margin: 'auto' }} item xs={10}>
             {error ? (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import firebase from '../firebase';
 import { useFormik } from 'formik';
+import validationSchema from './validation/validationSchema';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -12,31 +13,12 @@ function SignIn(props) {
   const [error, setError] = useState(null);
   const { toggle } = props;
 
-  const validate = (values) => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = 'Email is Required';
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formik.values.email)
-    ) {
-      errors.email = 'Invalid Email Address';
-    }
-
-    if (!values.password) {
-      errors.password = 'Password is Required';
-    } else if (values.password.length <= 6) {
-      errors.password = 'Must be more than 6 characters';
-    }
-
-    return errors;
-  };
-
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
-    validate,
+    validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
       firebase
         .login(values.email, values.password)
@@ -67,8 +49,10 @@ function SignIn(props) {
               size="small"
               required
               variant="outlined"
+              autoComplete="email"
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
-            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
           </Grid>
           <Grid style={{ margin: 'auto' }} item xs={10}>
             <TextField
@@ -81,10 +65,10 @@ function SignIn(props) {
               size="small"
               type="password"
               variant="outlined"
+              autoComplete="current-password"
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
-            {formik.errors.password ? (
-              <div>{formik.errors.password}</div>
-            ) : null}
           </Grid>
           <Grid style={{ margin: 'auto' }} item xs={10}>
             {error ? (
