@@ -33,6 +33,10 @@ function SignUp(props) {
       errors.confirmPassword = 'Passwords does not match';
     }
 
+    if (!values.confirmPassword) {
+      errors.confirmPassword = 'Please Confirm Password';
+    }
+
     return errors;
   };
 
