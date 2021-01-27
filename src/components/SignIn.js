@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import firebase from '../firebase';
 import { useFormik } from 'formik';
-import validationSchema from './validation/validationSchema';
+import validationLoginSchema from './validation/validationLoginSchema';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -18,7 +18,7 @@ function SignIn(props) {
       email: '',
       password: '',
     },
-    validationSchema: validationSchema,
+    validationSchema: validationLoginSchema,
     onSubmit: (values, { resetForm }) => {
       firebase
         .login(values.email, values.password)

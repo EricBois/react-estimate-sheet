@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import validationSchema from './validation/validationSchema';
+import validationSignupSchema from './validation/validationSignupSchema';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -20,7 +20,7 @@ function SignUp(props) {
       name: '',
       confirmPassword: '',
     },
-    validationSchema: validationSchema,
+    validationSchema: validationSignupSchema,
     onSubmit: (values, { resetForm }) => {
       firebase
         .register(values.name, values.email, values.password)

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const validationSchema = yup.object({
+const validationLoginSchema = yup.object({
   name: yup
     .string('Enter your name')
     .required('Name is Required'),
@@ -18,4 +18,4 @@ const validationSchema = yup.object({
   ),
 });
 
-export default validationSchema;
+export default validationLoginSchema;
