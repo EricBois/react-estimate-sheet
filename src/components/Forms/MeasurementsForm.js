@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState, useContext } from 'react';
-import useInputState from '../../hooks/useInputState';
-import FirebaseContext from "../../firebase/context";
+import FirebaseContext from '../../firebase/context';
 import MeasureList from '../MeasureList';
 import { withStyles } from '@material-ui/styles';
+import { useFormik } from 'formik';
+import validationMeasureSchema from '../validation/validationMeasureSchema';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -17,18 +18,29 @@ function MeasurementsForm(props) {
   const { classes, dispatch, estimate } = props;
   const { firebase } = useContext(FirebaseContext);
 
-  const [roomLength, handleChangeLength, resetLength] = useInputState('');
-  const [sqfPrice, handleChangeSqfPrice, resetSqfPrice] = useInputState('0');
-  const [roomWidth, handleChangeWidth, resetWidth] = useInputState('');
   const [inputZone, setInputZone] = useState(false);
 
-  const handleSubmitMeasure = () => {
-    return dispatch({
-      type: 'ADDMEASURE',
-      id: estimate.id,
-      measures: { roomLength, roomWidth, sqfPrice },
-    });
-  };
+  const formik = useFormik({
+    initialValues: {
+      roomLength: '',
+      roomWidth: '',
+      sqfPrice: '',
+    },
+    validationSchema: validationMeasureSchema,
+    onSubmit: (values) => {
+      dispatch({
+        type: 'ADDMEASURE',
+        id: estimate.id,
+        measures: {
+          roomLength: values.roomLength,
+          roomWidth: values.roomWidth,
+          sqfPrice: values.sqfPrice,
+        },
+      });
+      setInputZone(false);
+    },
+  });
+
   let totalSqf = () => {
     let total = 0;
     estimate.measures.map((x) =>
@@ -61,23 +73,16 @@ function MeasurementsForm(props) {
       ac.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [estimate.measures]);
+  }, [estimate.measures])
+
   const handleClickInputZone = () => {
     setInputZone(!inputZone);
   };
+
   return (
     <Fragment>
       <Paper>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmitMeasure();
-            setInputZone(false);
-            resetLength();
-            resetWidth();
-            resetSqfPrice();
-          }}
-        >
+        <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography align="center" variant="h6">
@@ -112,31 +117,54 @@ function MeasurementsForm(props) {
                     variant="outlined"
                     required
                     className={classes.textfield}
-                    value={roomLength}
-                    onChange={handleChangeLength}
+                    value={formik.values.roomLength}
+                    onChange={formik.handleChange}
                     margin="normal"
                     type="number"
                     label="Length"
+                    name="roomLength"
+                    error={
+                      formik.touched.roomLength &&
+                      Boolean(formik.errors.roomLength)
+                    }
+                    helperText={
+                      formik.touched.roomLength && formik.errors.roomLength
+                    }
                   />
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
                     variant="outlined"
-                    value={roomWidth}
-                    onChange={handleChangeWidth}
+                    value={formik.values.roomWidth}
+                    onChange={formik.handleChange}
                     margin="normal"
                     type="number"
                     label="Width"
+                    name="roomWidth"
+                    error={
+                      formik.touched.roomWidth &&
+                      Boolean(formik.errors.roomWidth)
+                    }
+                    helperText={
+                      formik.touched.roomWidth && formik.errors.roomWidth
+                    }
                   />
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
                     variant="outlined"
-                    value={sqfPrice}
-                    onChange={handleChangeSqfPrice}
+                    value={formik.values.sqfPrice}
+                    onChange={formik.handleChange}
                     margin="normal"
                     type="number"
                     label="Sqf Price"
+                    name="sqfPrice"
+                    error={
+                      formik.touched.sqfPrice && Boolean(formik.errors.sqfPrice)
+                    }
+                    helperText={
+                      formik.touched.sqfPrice && formik.errors.sqfPrice
+                    }
                   />
                 </Grid>
               </Fragment>
@@ -148,10 +176,18 @@ function MeasurementsForm(props) {
                   required
                   fullWidth
                   className={classes.textfield}
-                  value={roomLength}
-                  onChange={handleChangeLength}
+                  value={formik.values.roomLength}
+                  onChange={formik.handleChange}
                   margin="normal"
                   label="Zone Name"
+                  name="roomLength"
+                  error={
+                    formik.touched.roomLength &&
+                    Boolean(formik.errors.roomLength)
+                  }
+                  helperText={
+                    formik.touched.roomLength && formik.errors.roomLength
+                  }
                 />
               </Grid>
             )}

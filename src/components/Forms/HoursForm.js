@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useContext } from 'react';
-import useInputState from '../hooks/useInputState';
-import FirebaseContext from "../firebase/context";
+import FirebaseContext from '../../firebase/context';
 import { withStyles } from '@material-ui/styles';
-import HoursList from './HoursList';
+import HoursList from '../HoursList';
+import { useFormik } from 'formik';
+import validationHoursSchema from '../validation/validationHoursSchema';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -11,26 +12,28 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import styles from '../styles/measurementsStyles';
+import styles from '../../styles/measurementsStyles';
 
 function HoursForm(props) {
   const { classes, dispatch, estimate } = props;
   const { firebase } = useContext(FirebaseContext);
 
-  const [item, handleChangeItem, resetItem] = useInputState('');
-  const [hours, handleChangeHours, resetHours] = useInputState('');
-  const [price, handleChangePrice, resetPrice] = useInputState('');
+  const formik = useFormik({
+    initialValues: {
+      item: '',
+      hours: '',
+      price: '',
+    },
+    validationSchema: validationHoursSchema,
+    onSubmit: (values) => {
+      dispatch({
+        type: 'ADDHOURS',
+        id: estimate.id,
+        hours: { item: values.item, hours: values.hours, price: values.price },
+      });
+    },
+  });
 
-  const handleSubmitHours = () => {
-    dispatch({
-      type: 'ADDHOURS',
-      id: estimate.id,
-      hours: { item, hours, price },
-    });
-    resetItem();
-    resetHours();
-    resetPrice();
-  };
   let totalHours = () => {
     let total = 0;
     estimate.hours.map((x) => (total += x.hours * x.price));
@@ -48,20 +51,17 @@ function HoursForm(props) {
         });
     };
     editEstimate();
+    
     return () => {
       ac.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estimate.hours]);
+
   return (
     <Fragment>
       <Paper>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmitHours();
-          }}
-        >
+        <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography align="center" variant="h6">
@@ -74,32 +74,41 @@ function HoursForm(props) {
                 variant="outlined"
                 required
                 className={classes.textfield}
-                value={item}
-                onChange={handleChangeItem}
+                value={formik.values.item}
+                onChange={formik.handleChange}
                 margin="normal"
                 label="Item Name"
+                name="item"
+                error={formik.touched.item && Boolean(formik.errors.item)}
+                helperText={formik.touched.item && formik.errors.item}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={hours}
+                value={formik.values.hours}
                 required
-                onChange={handleChangeHours}
+                onChange={formik.handleChange}
                 margin="normal"
                 type="number"
                 label="Hours"
+                name="hours"
+                error={formik.touched.hours && Boolean(formik.errors.hours)}
+                helperText={formik.touched.hours && formik.errors.hours}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={price}
+                value={formik.values.price}
                 required
-                onChange={handleChangePrice}
+                onChange={formik.handleChange}
                 margin="normal"
                 type="number"
                 label="Price"
+                name="price"
+                error={formik.touched.price && Boolean(formik.errors.price)}
+                helperText={formik.touched.price && formik.errors.price}
               />
             </Grid>
             <Grid item xs={12}>

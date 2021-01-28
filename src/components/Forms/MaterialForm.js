@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useContext } from 'react';
-import useInputState from '../../hooks/useInputState';
 import MaterialList from '../MaterialList';
-import FirebaseContext from "../../firebase/context";
+import FirebaseContext from '../../firebase/context';
 import { withStyles } from '@material-ui/styles';
+import { useFormik } from 'formik';
+import validationMaterialSchema from '../validation/validationMaterialSchema';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -17,20 +18,26 @@ function MaterialForm(props) {
   const { classes, dispatch, estimate } = props;
   const { firebase } = useContext(FirebaseContext);
 
-  const [item, handleChangeItem, resetItem] = useInputState('');
-  const [quantity, handleChangeQuantity, resetQuantity] = useInputState('');
-  const [price, handleChangePrice, resetPrice] = useInputState('0');
+  const formik = useFormik({
+    initialValues: {
+      item: '',
+      quantity: '',
+      price: '',
+    },
+    validationSchema: validationMaterialSchema,
+    onSubmit: (values) => {
+      dispatch({
+        type: 'ADDMATERIAL',
+        id: estimate.id,
+        material: {
+          item: values.item,
+          quantity: values.quantity,
+          price: values.price,
+        },
+      });
+    },
+  });
 
-  const handleSubmitItem = () => {
-    dispatch({
-      type: 'ADDMATERIAL',
-      id: estimate.id,
-      material: { item, quantity, price },
-    });
-    resetItem();
-    resetQuantity();
-    resetPrice();
-  };
   useEffect(() => {
     const ac = new AbortController();
     // sync material with db
@@ -43,6 +50,7 @@ function MaterialForm(props) {
         });
     };
     editEstimate();
+    
     return () => {
       ac.abort();
     };
@@ -57,12 +65,7 @@ function MaterialForm(props) {
   return (
     <Fragment>
       <Paper>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmitItem();
-          }}
-        >
+        <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography align="center" variant="h6">
@@ -75,31 +78,40 @@ function MaterialForm(props) {
                 variant="outlined"
                 required
                 className={classes.textfield}
-                value={item}
-                onChange={handleChangeItem}
+                value={formik.values.item}
+                onChange={formik.handleChange}
                 margin="normal"
                 label="Item Name"
+                name="item"
+                error={formik.touched.item && Boolean(formik.errors.item)}
+                helperText={formik.touched.item && formik.errors.item}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={quantity}
+                value={formik.values.quantity}
                 required
-                onChange={handleChangeQuantity}
+                onChange={formik.handleChange}
                 margin="normal"
                 type="number"
                 label="Quantity"
+                name="quantity"
+                error={formik.touched.quantity && Boolean(formik.errors.quantity)}
+                helperText={formik.touched.quantity && formik.errors.quantity}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
-                value={price}
-                onChange={handleChangePrice}
+                value={formik.values.price}
+                onChange={formik.handleChange}
                 margin="normal"
                 type="number"
                 label="Price"
+                name="price"
+                error={formik.touched.price && Boolean(formik.errors.price)}
+                helperText={formik.touched.price && formik.errors.price}
               />
             </Grid>
             <Grid item xs={12}>

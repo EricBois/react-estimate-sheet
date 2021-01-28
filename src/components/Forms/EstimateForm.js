@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import useInputState from '../../hooks/useInputState';
+import { useFormik } from 'formik';
+import validationEstimateSchema from '../validation/validationEstimateSchema';
 
 import { withStyles } from '@material-ui/styles';
 import styles from '../../styles/createEstimateStyles';
@@ -14,57 +15,65 @@ import Button from '@material-ui/core/Button';
 
 function EstimateForm(props) {
   const { classes, mode, saveToDb, estimate, toggleEditForm } = props;
-  const [name, handleChangeName, resetName] = useInputState(estimate.name);
-  const [address, handleChangeAddress, resetAddress] = useInputState(estimate.address);
-  const [note, handleChangeNote, resetNote] = useInputState(estimate.note);
 
   const history = useHistory();
   const id = uuid();
 
-  const handleSubmit = () => {
-    saveToDb(id, name, address, note);
-    resetName();
-    resetAddress();
-    resetNote();
-    
-    !toggleEditForm ? history.push(`/estimate/${id}`) : toggleEditForm()
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: estimate.name,
+      address: estimate.address,
+      note: estimate.note,
+    },
+    validationSchema: validationEstimateSchema,
+    onSubmit: (values) => {
+      saveToDb(
+        id,
+        values.name,
+        values.address,
+        values.note,
+      );
+      !toggleEditForm ? history.push(`/estimate/${id}`) : toggleEditForm();
+    },
+  });
 
   return (
     <Paper elevation={3} className={classes.paper}>
       <Typography className={classes.title} variant="h5">
         Client Info
       </Typography>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
+      <form onSubmit={formik.handleSubmit}>
         <Grid container justify="center" spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              value={name}
-              onChange={handleChangeName}
+              value={formik.values.name}
+              onChange={formik.handleChange}
               margin="normal"
               label="Client Name"
+              name="name"
               fullWidth
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              value={address}
-              onChange={handleChangeAddress}
+              value={formik.values.address}
+              onChange={formik.handleChange}
               margin="normal"
               label="Address"
+              name="address"
               fullWidth
+              error={formik.touched.address && Boolean(formik.errors.address)}
+              helperText={formik.touched.address && formik.errors.address}
             />
           </Grid>
           <Grid item xs={12}>
             <TextareaAutosize
-              value={note}
-              onChange={handleChangeNote}
+              value={formik.values.note}
+              onChange={formik.handleChange}
               className={classes.textArea}
+              name="note"
               aria-label="minimum height"
               rowsMin={5}
               placeholder="*OPTIONAL, Describe work / project"

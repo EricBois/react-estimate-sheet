@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MeasurementsForm from './Forms/MeasurementsForm';
-import HoursForm from './HoursForm';
+import HoursForm from './Forms/HoursForm';
 import MaterialForm from './Forms/MaterialForm';
 import Result from './Result';
 
