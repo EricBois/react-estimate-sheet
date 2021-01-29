@@ -19,6 +19,7 @@ function MeasurementsForm(props) {
   const { firebase } = useContext(FirebaseContext);
 
   const [inputZone, setInputZone] = useState(false);
+  const [error, setError] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +38,6 @@ function MeasurementsForm(props) {
           sqfPrice: values.sqfPrice,
         },
       });
-      setInputZone(false);
     },
   });
 
@@ -58,22 +58,25 @@ function MeasurementsForm(props) {
     return total;
   };
   useEffect(() => {
-    const ac = new AbortController();
+    const abortController = new AbortController();
     // sync material with db
     const editEstimate = async () => {
-      return await firebase.db
+      try {
+        await firebase.db
         .collection('estimates')
         .doc(estimate.id.toString())
         .update({
           measures: estimate.measures,
         });
+        await setInputZone(false);
+      }catch(err) {
+        setError(err)
+      }
     };
     editEstimate();
-    return () => {
-      ac.abort();
-    };
+    return () => abortController.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [estimate.measures])
+  }, [estimate.measures]);
 
   const handleClickInputZone = () => {
     setInputZone(!inputZone);
@@ -224,8 +227,9 @@ function MeasurementsForm(props) {
       <Divider />
       {estimate && (
         <Paper>
+          { error && <h6>error</h6>}
           <Typography align="center" variant="subtitle1">
-            Total: {totalSqf()} Sqf (${totalSqfPrice().toFixed(2)})
+            Total: {totalSqf().toFixed(2)} Sqf (${totalSqfPrice().toFixed(2)})
           </Typography>
         </Paper>
       )}
