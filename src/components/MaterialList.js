@@ -39,10 +39,10 @@ function MaterialList(props) {
             primary={material ? `${material.item}` : ''}
             secondary={
               material && material.price
-                ? `${material.quantity} x $${material.price} ($${
-                    material.quantity * material.price
+                ? `${material.quantity} x $${material.price.toFixed(2)} ($${
+                    ((material.quantity * material.price).toFixed(2))
                   })`
-                : `Quantity: ${material.quantity}`
+                : `Quantity: ${material.quantity.toFixed(2)}`
             }
           />
           <ListItemSecondaryAction>

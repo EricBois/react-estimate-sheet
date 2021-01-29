@@ -39,8 +39,8 @@ function HoursList(props) {
             primary={hour ? `${hour.item}` : ''}
             secondary={
               hour
-                ? `${hour.hours} hrs @ $${hour.price} ($${
-                    hour.hours * hour.price
+                ? `${hour.hours} hrs @ $${hour.price.toFixed(2)} ($${
+                    (hour.hours * hour.price).toFixed(2)
                   })`
                 : ''
             }

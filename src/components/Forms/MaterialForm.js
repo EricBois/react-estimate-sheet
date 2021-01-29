@@ -148,7 +148,7 @@ function MaterialForm(props) {
 
       <Paper>
         <Typography align="center" variant="subtitle1">
-          Total: ${totalMats()}
+          Total: ${totalMats().toFixed(2)}
         </Typography>
       </Paper>
     </Fragment>

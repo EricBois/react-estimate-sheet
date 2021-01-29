@@ -45,7 +45,7 @@ function MeasureList(props) {
             }
             secondary={
               !isNaN(measure.roomLength) && measure.roomWidth
-                ? `${measure.roomLength * measure.roomWidth} sqf @ $${
+                ? `${(measure.roomLength * measure.roomWidth).toFixed(2)} sqf @ $${
                     measure.sqfPrice
                   }`
                 : !isNaN(measure.roomLength)
