@@ -185,6 +185,18 @@ export default function PersistentDrawerLeft(props) {
                 <ListItemText primary="Create" />
               </ListItem>
             </List>
+            <Divider />
+            <List>
+              <ListItem
+                onClick={toggleDrawer(false)}
+                button
+                component={Link}
+                to="/profile"
+              >
+                <ListItemIcon></ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItem>
+            </List>
           </Drawer>
         </>
       ) : (
