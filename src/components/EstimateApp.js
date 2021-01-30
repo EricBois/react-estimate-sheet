@@ -13,7 +13,7 @@ import ValidateEmailPage from './ValidateEmailPage';
 function EstimateApp(props) {
   const { user } = props;
   const [estimates, dispatch] = useReducer(estimateReducer, []);
-  const { firebase } = useContext(FirebaseContext);
+  const { firebase, profile } = useContext(FirebaseContext);
   const estimate = { name: '', address: '', note: '' };
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function EstimateApp(props) {
             </Route>
 
             <Route exact path="/profile">
-              <Profile profile={user} />
+              <Profile profile={profile} />
             </Route>
 
             <Route
