@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import validationEstimateSchema from '../validation/validationEstimateSchema';
 
 import { withStyles } from '@material-ui/styles';
-import styles from '../../styles/createEstimateStyles';
+import styles from '../styles/createEstimateStyles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';

@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import styles from '../../styles/measurementsStyles';
+import styles from '../styles/measurementsStyles';
 
 function MeasurementsForm(props) {
   const { classes, dispatch, estimate } = props;
