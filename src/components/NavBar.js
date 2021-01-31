@@ -131,7 +131,7 @@ export default function PersistentDrawerLeft(props) {
                 <MenuIcon />
               </IconButton>
               <Typography className={classes.title} variant="h6">
-                Estimate Sheet
+                Estimate IT
               </Typography>
               <Button
                 onClick={() => firebase.logout()}
