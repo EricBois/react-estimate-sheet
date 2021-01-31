@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import firebase from '../../firebase/index';
 
-function useProfile() {
-  const [profile, setProfile] = useState(null);
+function useSettings() {
+  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
     const unsubscribe = firebase.auth.onAuthStateChanged((user) => {
@@ -12,17 +12,17 @@ function useProfile() {
           .doc(user.uid)
           .get()
           .then((user) => {
-            setProfile(user.data());
+            setSettings(user.data());
           });
       } else {
-        setProfile(null);
+        setSettings(null);
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-  return profile;
+  return settings;
 }
 
-export default useProfile;
+export default useSettings;

@@ -6,12 +6,12 @@ import Welcome from './components/Welcome';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import useAuth from './components/Auth/useAuth';
-import useProfile from './components/Auth/useProfile';
+import useSettings from './components/hooks/useSettings';
 import firebase, { FirebaseContext } from './firebase/index';
 
 function App() {
   const user = useAuth();
-  const profile = useProfile();
+  const settings = useSettings();
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <React.StrictMode>
-      <FirebaseContext.Provider value={{ user, firebase, profile }}>
+      <FirebaseContext.Provider value={{ user, firebase, settings }}>
         <BrowserRouter>
           {user ? (
             <EstimateApp user={user} />

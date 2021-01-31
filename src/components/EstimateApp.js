@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import FirebaseContext from '../firebase/context';
 import Estimator from './Estimator';
 import EstimateForm from './Forms/EstimateForm';
-import Profile from './Profile';
+import Settings from './Settings';
 import NavBar from './NavBar';
 import Estimate from './Estimate';
 import Action from './Action';
@@ -13,7 +13,7 @@ import ValidateEmailPage from './ValidateEmailPage';
 function EstimateApp(props) {
   const { user } = props;
   const [estimates, dispatch] = useReducer(estimateReducer, []);
-  const { firebase, profile } = useContext(FirebaseContext);
+  const { firebase, settings } = useContext(FirebaseContext);
   const estimate = { name: '', address: '', note: '' };
 
   useEffect(() => {
@@ -75,8 +75,8 @@ function EstimateApp(props) {
               />
             </Route>
 
-            <Route exact path="/profile">
-              <Profile profile={profile} />
+            <Route exact path="/settings">
+              <Settings settings={settings} />
             </Route>
 
             <Route

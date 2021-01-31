@@ -191,10 +191,10 @@ export default function PersistentDrawerLeft(props) {
                 onClick={toggleDrawer(false)}
                 button
                 component={Link}
-                to="/profile"
+                to="/settings"
               >
                 <ListItemIcon></ListItemIcon>
-                <ListItemText primary="Profile" />
+                <ListItemText primary="Settings" />
               </ListItem>
             </List>
           </Drawer>

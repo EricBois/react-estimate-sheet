@@ -8,13 +8,13 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 
-function Profile(props) {
-  const { profile } = props;
+function Settings(props) {
+  const { settings } = props;
 
   const formik = useFormik({
     initialValues: {
-      name: profile.name || '',
-      email: profile.email || '',
+      name: settings.name || '',
+      email: settings.email || '',
     },
     validationSchema: validationMaterialSchema,
     onSubmit: (values) => {},
@@ -27,12 +27,12 @@ function Profile(props) {
         <Grid item xs={12}>
           <Paper>
             <Typography align="center" variant="h3" component="h2">
-              Your Profile
+              Settings
             </Typography>
           </Paper>
         </Grid>
         <Divider />
-          <Grid style={{ margin: 'auto' }} item xs={6}>
+          <Grid style={{ margin: 'auto' }} item xs={10} sm={5}>
             <TextField
               fullWidth
               value={formik.values.name}
@@ -43,7 +43,7 @@ function Profile(props) {
               variant="outlined"
             />
           </Grid>
-          <Grid style={{ margin: 'auto' }} item xs={6}>
+          <Grid style={{ margin: 'auto' }} item xs={10} sm={5}>
             <TextField
               fullWidth
               value={formik.values.email}
@@ -60,4 +60,4 @@ function Profile(props) {
   );
 }
 
-export default Profile;
+export default Settings;
