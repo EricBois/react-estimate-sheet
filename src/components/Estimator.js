@@ -12,7 +12,7 @@ function Estimator(props) {
   const { estimates, dispatch } = props;
 
   return (
-    <Paper>
+    <Paper style={{ maxWidth: '600px', margin: 'auto' }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <List component="nav" aria-label="contacts">
