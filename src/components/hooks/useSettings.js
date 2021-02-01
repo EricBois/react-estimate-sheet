@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import firebase from '../../firebase/index';
 
-function useSettings() {
+export function useSettings() {
   const [settings, setSettings] = useState(null);
 
   useEffect(() => {
@@ -22,7 +22,14 @@ function useSettings() {
     return () => unsubscribe();
   }, []);
 
-  return settings;
-}
+  const editSettings = async (data) => {
+    return await firebase.db
+      .collection('users')
+      .doc(settings.id.toString())
+      .update({
+        ...data,
+      });
+  }
 
-export default useSettings;
+  return {settings, editSettings};
+}
