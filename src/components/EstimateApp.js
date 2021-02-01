@@ -1,6 +1,7 @@
-import React, { Fragment, useEffect, useReducer, useContext } from 'react';
+import React, { Fragment, useEffect, useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import FirebaseContext from '../firebase/context';
+import firebase from '../firebase/index';
+import {useSettings} from './hooks/useSettings';
 import Estimator from './Estimator';
 import EstimateForm from './Forms/EstimateForm';
 import Settings from './Settings';
@@ -13,8 +14,8 @@ import ValidateEmailPage from './ValidateEmailPage';
 function EstimateApp(props) {
   const { user } = props;
   const [estimates, dispatch] = useReducer(estimateReducer, []);
-  const { firebase, settings } = useContext(FirebaseContext);
   const estimate = { name: '', address: '', note: '' };
+  const {editSettings, settings} = useSettings();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,7 +77,7 @@ function EstimateApp(props) {
             </Route>
 
             <Route exact path="/settings">
-              <Settings settings={settings} />
+              <Settings settings={settings} edit={(props) => editSettings(props)} />
             </Route>
 
             <Route

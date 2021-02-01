@@ -6,12 +6,12 @@ import Welcome from './components/Welcome';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import useAuth from './components/Auth/useAuth';
-import useSettings from './components/hooks/useSettings';
+import {useSettings} from './components/hooks/useSettings';
 import firebase, { FirebaseContext } from './firebase/index';
 
 function App() {
   const user = useAuth();
-  const settings = useSettings();
+  const {settings} = useSettings();
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
