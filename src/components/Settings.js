@@ -15,11 +15,12 @@ function Settings(props) {
   const { settings, classes, edit } = props;
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: settings.name || '',
-      email: settings.email || '',
-      sqfPrice: settings.sqfPrice || '',
-      hourly: settings.hourly || '',
+      name: settings ? settings.name : '',
+      email: settings ? settings.email : '',
+      sqfPrice: settings ? settings.sqfPrice : '',
+      hourly: settings ? settings.hourly : '',
     },
     validationSchema: validationSettingsSchema,
     onSubmit: (values) => {
@@ -52,9 +53,7 @@ function Settings(props) {
               name="name"
               size="small"
               variant="outlined"
-              error={
-                formik.touched.name && Boolean(formik.errors.name)
-              }
+              error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
             />
           </Grid>
@@ -87,9 +86,7 @@ function Settings(props) {
               size="small"
               type="number"
               variant="outlined"
-              error={
-                formik.touched.sqfPrice && Boolean(formik.errors.sqfPrice)
-              }
+              error={formik.touched.sqfPrice && Boolean(formik.errors.sqfPrice)}
               helperText={formik.touched.sqfPrice && formik.errors.sqfPrice}
             />
           </Grid>
@@ -103,9 +100,7 @@ function Settings(props) {
               size="small"
               type="number"
               variant="outlined"
-              error={
-                formik.touched.hourly && Boolean(formik.errors.hourly)
-              }
+              error={formik.touched.hourly && Boolean(formik.errors.hourly)}
               helperText={formik.touched.hourly && formik.errors.hourly}
             />
           </Grid>
