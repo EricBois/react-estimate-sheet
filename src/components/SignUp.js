@@ -26,9 +26,15 @@ function SignUp(props) {
         .register(values.name, values.email, values.password)
         .then(setError(null), resetForm({ values: '' }))
         .catch((err) => {
-          setError('Something Went Wrong!');
+          switch(err.code) {
+            case 'auth/network-request-failed':
+              setError('No Internet Connection Detected!');
+              break;
+            default:
+              setError('Something went wrong!');
+              break;
+          }
         });
-      resetForm({ values: '' });
     },
   });
 
