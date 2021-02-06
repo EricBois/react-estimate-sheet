@@ -3,8 +3,7 @@ import NavBar from './components/NavBar';
 import { BrowserRouter } from 'react-router-dom';
 import EstimateApp from './components/EstimateApp';
 import Welcome from './components/Welcome';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
+import Loader from './components/Loader';
 import useAuth from './components/Auth/useAuth';
 import {useSettings} from './components/hooks/useSettings';
 import firebase, { FirebaseContext } from './firebase/index';
@@ -20,17 +19,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <Grid
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: '100vh' }}
-        container
-      >
-        <Grid item xs={12}>
-          <CircularProgress />
-        </Grid>
-      </Grid>
+      <Loader />
     );
   }
 
