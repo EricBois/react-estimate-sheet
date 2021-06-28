@@ -12,6 +12,7 @@ import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import Paper from '@material-ui/core/Paper';
 
 
 export default function EstimateList(props) {
@@ -37,6 +38,7 @@ export default function EstimateList(props) {
   };
   return (
     <Fragment>
+      <Paper variant="outlined" elevation={23} style={{maxWidth: '580px', backgroundColor: '#ecf2f9', margin: '8px auto'}}>
       {isEditing ? (
         <EstimateForm
         mode="Edit"
@@ -69,6 +71,7 @@ export default function EstimateList(props) {
           </ListItem>
         </>
       )}
+      </Paper>
     </Fragment>
   );
 }

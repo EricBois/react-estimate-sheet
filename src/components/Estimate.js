@@ -45,47 +45,51 @@ function Estimate(props) {
 
   return (
     <Grid container>
-      {estimate && (
-        <Grid item xs={12}>
-          <Paper square className={classes.root}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              variant="fullWidth"
-              indicatorColor="secondary"
-              textColor="secondary"
-              aria-label="icon label tabs example"
-            >
-              <Tab icon={<AssignmentIcon />} label="Measure" />
-              <Tab icon={<AccessTimeIcon />} label="Hours" />
-              <Tab icon={<BallotIcon />} label="Material" />
-              <Tab icon={<AssignmentTurnedInIcon />} label="Result" />
-            </Tabs>
-          </Paper>
+      <Grid item xs={12}>
+        <Paper elevation={22} className={classes.root}>
+          {estimate && (
+            <Grid item xs={12}>
+              <Paper square className={classes.root}>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  variant="fullWidth"
+                  indicatorColor="secondary"
+                  textColor="secondary"
+                  aria-label="icon label tabs example"
+                >
+                  <Tab icon={<AssignmentIcon />} label="Measure" />
+                  <Tab icon={<AccessTimeIcon />} label="Hours" />
+                  <Tab icon={<BallotIcon />} label="Material" />
+                  <Tab icon={<AssignmentTurnedInIcon />} label="Result" />
+                </Tabs>
+              </Paper>
 
-          <TabPanel value={value} index={0}>
-            <MeasurementsForm
-              estimate={estimate}
-              dispatch={(props) => dispatch(props)}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <HoursForm
-              estimate={estimate}
-              dispatch={(props) => dispatch(props)}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <MaterialForm
-              estimate={estimate}
-              dispatch={(props) => dispatch(props)}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <Result estimate={estimate} />
-          </TabPanel>
-        </Grid>
-      )}
+              <TabPanel value={value} index={0}>
+                <MeasurementsForm
+                  estimate={estimate}
+                  dispatch={(props) => dispatch(props)}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <HoursForm
+                  estimate={estimate}
+                  dispatch={(props) => dispatch(props)}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <MaterialForm
+                  estimate={estimate}
+                  dispatch={(props) => dispatch(props)}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                <Result estimate={estimate} />
+              </TabPanel>
+            </Grid>
+          )}
+        </Paper>
+      </Grid>
     </Grid>
   );
 }

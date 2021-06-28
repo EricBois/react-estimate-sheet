@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   
   root: {
     flexGrow: 1,
-    marginBottom: '5rem',
+    marginBottom: '8rem',
   },
   barColor: {
     backgroundColor: '#004d99'

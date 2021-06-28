@@ -6,15 +6,16 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 
 function Estimator(props) {
   const { estimates, dispatch } = props;
 
   return (
-    <Paper style={{ maxWidth: '600px', margin: 'auto' }}>
+    <Paper elevation={20} style={{ maxWidth: '600px', minHeight: '200px', margin: 'auto' }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
+          <Typography align="center" variant="h6">Estimate List</Typography>
           <List component="nav" aria-label="contacts">
             {estimates.length === 0 && (
               <ListItem component={Link} to="/create" button>
@@ -27,7 +28,6 @@ function Estimator(props) {
                   estimate={estimate}
                   dispatch={(props) => dispatch(props)}
                 />
-                <Divider />
               </Fragment>
             ))}
           </List>

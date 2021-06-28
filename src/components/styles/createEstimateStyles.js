@@ -6,7 +6,7 @@ const styles = {
     padding: '0px 15px',
     margin: 'auto',
     maxWidth: '850px',
-    height: '80vh',
+    minHeight: '40vh',
     backgroundColor: '#fafafa',
     textAlign: 'center'
   },

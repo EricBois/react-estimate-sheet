@@ -3,7 +3,6 @@ const styles = {
         minHeight: '50vh',
         maxWidth: '400px',
         margin: 'auto',
-        marginTop: '15vh'
     },
     grid: {
         margin: 'auto'
