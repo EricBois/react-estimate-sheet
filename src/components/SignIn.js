@@ -26,17 +26,7 @@ function SignIn(props) {
         .login(values.email, values.password)
         .then(setError(null), resetForm({ values: '' }))
         .catch((err) => {
-          switch(err.code) {
-            case 'auth/network-request-failed':
-              setError('No Internet Connection Detected!');
-              break;
-            case 'auth/user-not-found':
-              setError('Email or Password Invalid');
-              break;
-            default:
-              setError('Something went wrong!');
-              break;
-          }
+          setError('Email or Password Invalid');
         });
     },
   });
