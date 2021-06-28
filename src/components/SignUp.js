@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
-import validationSignupSchema from './validation/validationSignupSchema';
+import React, { useState } from 'react'
+import { useFormik } from 'formik'
+import validationSignupSchema from './validation/validationSignupSchema'
 
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import firebase from '../firebase';
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import firebase from '../firebase'
+import { withStyles } from '@material-ui/styles'
+import styles from './styles/authStyles'
 
 function SignUp(props) {
   const [error, setError] = useState(null);
-  const { toggle } = props;
+  const { toggle, classes } = props;
 
   const formik = useFormik({
     initialValues: {
@@ -39,7 +41,7 @@ function SignUp(props) {
   });
 
   return (
-    <Paper style={{ minHeight: '100vh', maxWidth: '400px', margin: 'auto' }}>
+    <Paper className={classes.root}>
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item style={{ margin: 'auto' }} xs={10}>
@@ -47,7 +49,7 @@ function SignUp(props) {
               Sign Up
             </Typography>
           </Grid>
-          <Grid style={{ margin: 'auto' }} item xs={10}>
+          <Grid className={classes.grid} item xs={10}>
             <TextField
               fullWidth
               value={formik.values.name}
@@ -60,7 +62,7 @@ function SignUp(props) {
               helperText={formik.touched.name && formik.errors.name}
             />
           </Grid>
-          <Grid style={{ margin: 'auto' }} item xs={10}>
+          <Grid className={classes.grid} item xs={10}>
             <TextField
               fullWidth
               value={formik.values.email}
@@ -74,7 +76,7 @@ function SignUp(props) {
               helperText={formik.touched.email && formik.errors.email}
             />
           </Grid>
-          <Grid style={{ margin: 'auto' }} item xs={10}>
+          <Grid className={classes.grid} item xs={10}>
             <TextField
               fullWidth
               value={formik.values.password}
@@ -89,7 +91,7 @@ function SignUp(props) {
               helperText={formik.touched.password && formik.errors.password}
             />
           </Grid>
-          <Grid style={{ margin: 'auto' }} item xs={10}>
+          <Grid className={classes.grid} item xs={10}>
             <TextField
               fullWidth
               value={formik.values.confirmPassword}
@@ -104,9 +106,9 @@ function SignUp(props) {
               helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
             />
           </Grid>
-          <Grid style={{ margin: 'auto' }} item xs={10}>
+          <Grid className={classes.grid} item xs={10}>
             {error ? (
-              <p style={{ color: 'red', margin: 'auto', textAlign: 'center' }}>
+              <p className={classes.error}>
                 {error}
               </p>
             ) : null}
@@ -119,7 +121,7 @@ function SignUp(props) {
               Sign Up
             </Button>
           </Grid>
-          <Grid style={{ margin: 'auto' }} item xs={10}>
+          <Grid className={classes.grid} item xs={10}>
             <Button fullWidth onClick={toggle(false)}>
               Already have an Account ?
             </Button>
@@ -130,4 +132,4 @@ function SignUp(props) {
   );
 }
 
-export default SignUp;
+export default withStyles(styles)(SignUp)
