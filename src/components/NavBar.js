@@ -19,12 +19,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  
   root: {
     flexGrow: 1,
     marginBottom: '5rem',
+  },
+  barColor: {
+    backgroundColor: '#004d99'
   },
   title: {
     flexGrow: 1,
@@ -208,9 +213,9 @@ export default function PersistentDrawerLeft(props) {
               [classes.appBarShift]: open,
             })}
           >
-            <Toolbar>
+            <Toolbar className={clsx(classes.barColor)}>
               <Typography variant="h6" noWrap>
-                Estimate Sheet
+                Estimate It
               </Typography>
             </Toolbar>
           </AppBar>
