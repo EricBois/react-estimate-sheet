@@ -16,7 +16,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import Grid from '@material-ui/core/Grid';
 import styles from './styles/estimateStyles';
 
-function Estimate(props) {
+function EstimateSheet(props) {
   const { estimate, classes, dispatch } = props;
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
@@ -94,4 +94,4 @@ function Estimate(props) {
   );
 }
 
-export default withStyles(styles)(Estimate);
+export default withStyles(styles)(EstimateSheet);
