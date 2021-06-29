@@ -18,7 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
-
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const drawerWidth = 240;
 
@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   
   root: {
     flexGrow: 1,
-    marginBottom: '8rem',
   },
   barColor: {
     backgroundColor: '#004d99'
@@ -91,6 +90,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PersistentDrawerLeft(props) {
+  const desktop = useMediaQuery('(min-width:600px)');
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -115,7 +115,7 @@ export default function PersistentDrawerLeft(props) {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{marginBottom: desktop ? '8rem' : '4rem' ,}}>
       {isLoggedIn ? (
         <>
           <CssBaseline />
