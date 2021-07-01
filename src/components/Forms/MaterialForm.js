@@ -74,7 +74,6 @@ function MaterialForm(props) {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                autoFocus
                 variant="outlined"
                 required
                 className={classes.textfield}
