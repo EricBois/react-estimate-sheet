@@ -13,6 +13,7 @@ import styles from './styles/authStyles'
 
 function SignIn(props) {
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { toggle, classes } = props;
 
   const formik = useFormik({
@@ -24,15 +25,16 @@ function SignIn(props) {
     onSubmit: (values, { resetForm }) => {
       firebase
         .login(values.email, values.password)
-        .then(setError(null), resetForm({ values: '' }))
+        .then(setError(null), setLoading(true))
         .catch((err) => {
+          resetForm({ values: '' })
           setError('Email or Password Invalid');
         });
     },
   });
 
   return (
-    <Paper className={classes.root}>
+    <Paper elevation={20} className={classes.root}>
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item className={classes.grid} xs={10}>
@@ -78,6 +80,7 @@ function SignIn(props) {
               </p>
             ) : null}
             <Button
+              disabled={loading}
               color="secondary"
               fullWidth
               type="submit"

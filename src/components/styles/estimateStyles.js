@@ -4,7 +4,7 @@ const styles = {
     maxWidth: 650,
     margin: 'auto',
     marginTop: '-2vh',
-    marginBottom: '-1.5vh'
+    marginBottom: '5rem'
   },
   container: {
     maxWidth: 700,

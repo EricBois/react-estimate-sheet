@@ -41,7 +41,7 @@ function SignUp(props) {
   });
 
   return (
-    <Paper className={classes.root}>
+    <Paper elevation={20} className={classes.root}>
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item style={{ margin: 'auto' }} xs={10}>
