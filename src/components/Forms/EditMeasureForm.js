@@ -37,7 +37,6 @@ function EditMeasureForm(props) {
       <Grid container spacing={1}>
         <Grid item xs={4}>
           <TextField
-            autoFocus
             variant="outlined"
             required
             value={formik.values.roomLength}

@@ -32,7 +32,6 @@ function EditHoursForm(props) {
         <Grid item xs={4}>
           <TextField
             name="item"
-            autoFocus
             variant="outlined"
             required
             value={formik.values.item}
