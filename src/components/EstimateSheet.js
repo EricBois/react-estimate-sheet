@@ -49,7 +49,7 @@ function EstimateSheet(props) {
         <Paper elevation={22} className={classes.root}>
           {estimate && (
             <Grid item xs={12}>
-              <Paper square className={classes.root}>
+              <Paper square>
                 <Tabs
                   value={value}
                   onChange={handleChange}
