@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import NavBar from './components/NavBar';
 import { BrowserRouter } from 'react-router-dom';
-import EstimateApp from './components/EstimateApp';
+import EstimateApp from './components/EstimateAppRouter';
 import Welcome from './components/Welcome';
 import Loader from './components/Loader';
 import useAuth from './components/Auth/useAuth';
