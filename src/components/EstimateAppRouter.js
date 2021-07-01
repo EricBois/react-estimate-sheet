@@ -62,7 +62,6 @@ function EstimateApp(props) {
     dispatch({ type: 'ADD', id, name, address, note });
     firebase.save(id, { name, address, note }, user);
   };
-
   return (
     <Fragment>
       <Route path="/">
@@ -117,7 +116,7 @@ function EstimateApp(props) {
             width: desktop ? '650px' : '100%',
             position: 'fixed',
             bottom: 0,
-            margin: 'auto', /* Will not center vertically and won't work in IE6/7. */
+            margin: '0.3% auto', /* Will not center vertically and won't work in IE6/7. */
             left: 0,
             right: 0
           }}
