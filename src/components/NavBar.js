@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import firebase from "../firebase";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -11,19 +11,21 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+// import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-  
+
   root: {
     flexGrow: 1,
   },
@@ -92,13 +94,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PersistentDrawerLeft(props) {
   const desktop = useMediaQuery('(min-width:600px)');
+  const location = useLocation()
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  // const handleDrawerOpen = () => {
+  //   setOpen(true);
+  // };
 
   const { isLoggedIn } = props;
   const handleDrawerClose = () => {
@@ -117,7 +120,7 @@ export default function PersistentDrawerLeft(props) {
   };
 
   return (
-    <div className={classes.root} style={{marginBottom: desktop ? '8rem' : '4rem' ,}}>
+    <div className={classes.root} style={{ marginBottom: desktop ? '8rem' : '4rem', }}>
       {isLoggedIn ? (
         <>
           <CssBaseline />
@@ -128,15 +131,17 @@ export default function PersistentDrawerLeft(props) {
             })}
           >
             <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                className={clsx(classes.menuButton, open && classes.hide)}
-              >
-                <MenuIcon />
-              </IconButton>
+              {location.pathname !== '/' &&
+                <IconButton
+                  style={{ color: 'red' }}
+                  aria-label="go back"
+                  edge="start"
+                  component={Link}
+                  to="/"
+                >
+                  <ArrowBackIcon />
+                </IconButton>
+              }
               <Typography className={classes.title} variant="h6">
                 Estimate IT
               </Typography>
@@ -147,6 +152,16 @@ export default function PersistentDrawerLeft(props) {
               >
                 Logout
               </Button>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+                component={Link}
+                to="/settings"
+              >
+                <AccountCircle />
+              </IconButton>
             </Toolbar>
           </AppBar>
           <Drawer
