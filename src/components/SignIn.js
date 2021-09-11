@@ -27,7 +27,7 @@ function SignIn(props) {
         .login(values.email, values.password)
         .then(setError(null), setLoading(true))
         .catch((err) => {
-          resetForm({ values: '' })
+          setLoading(false)
           setError('Email or Password Invalid');
         });
     },
