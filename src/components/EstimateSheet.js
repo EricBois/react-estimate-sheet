@@ -44,7 +44,12 @@ function EstimateSheet(props) {
   }
 
   return (
-    <Grid container>
+    <Grid container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: '60vh' }}>
       <Grid item xs={12}>
         <Paper elevation={22} className={classes.root}>
           {estimate && (

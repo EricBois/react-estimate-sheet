@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    backgroundColor: '#212936'
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -130,7 +131,7 @@ export default function PersistentDrawerLeft(props) {
               [classes.appBarShift]: open,
             })}
           >
-            <Toolbar>
+            <Toolbar variant="dense">
               {location.pathname !== '/' &&
                 <IconButton
                   style={{ color: 'red' }}
@@ -230,7 +231,7 @@ export default function PersistentDrawerLeft(props) {
               [classes.appBarShift]: open,
             })}
           >
-            <Toolbar className={clsx(classes.barColor)}>
+            <Toolbar variant="dense" className={clsx(classes.barColor)}>
               <Typography variant="h6" noWrap>
                 Estimate It
               </Typography>

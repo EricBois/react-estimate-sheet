@@ -9,8 +9,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: rgb(30,121,145);
-background: linear-gradient(90deg, rgba(30,121,145,1) 0%, rgba(20,106,179,1) 50%, rgba(97,185,203,1) 100%);
+  background-color: #5e5c61 !important;
+  background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23eaeaea' fill-opacity='0.09' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 code {
