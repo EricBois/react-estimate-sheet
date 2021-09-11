@@ -1,6 +1,5 @@
 const styles = {
     root: {
-        minHeight: '50vh',
         maxWidth: '400px',
         margin: 'auto',
     },
