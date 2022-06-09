@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { useFormik } from 'formik'
-import validationSignupSchema from './validation/validationSignupSchema'
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import validationSignupSchema from "./validation/validationSignupSchema";
 
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
-import firebase from '../firebase'
-import { withStyles } from '@material-ui/styles'
-import styles from './styles/authStyles'
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import firebase from "../firebase";
+import { withStyles } from "@material-ui/styles";
+import styles from "./styles/authStyles";
 
 function SignUp(props) {
   const [error, setError] = useState(null);
@@ -17,23 +17,23 @@ function SignUp(props) {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
-      name: '',
-      confirmPassword: '',
+      email: "",
+      password: "",
+      name: "",
+      confirmPassword: "",
     },
     validationSchema: validationSignupSchema,
     onSubmit: (values, { resetForm }) => {
       firebase
         .register(values.name, values.email, values.password)
-        .then(setError(null), resetForm({ values: '' }))
+        .then(setError(null), resetForm({ values: "" }))
         .catch((err) => {
-          switch(err.code) {
-            case 'auth/network-request-failed':
-              setError('No Internet Connection Detected!');
+          switch (err.code) {
+            case "auth/network-request-failed":
+              setError("No Internet Connection Detected!");
               break;
             default:
-              setError('Something went wrong!');
+              setError("Something went wrong!");
               break;
           }
         });
@@ -44,7 +44,7 @@ function SignUp(props) {
     <Paper elevation={20} className={classes.root}>
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item style={{ margin: 'auto' }} xs={10}>
+          <Grid item style={{ margin: "auto" }} xs={10}>
             <Typography align="center" variant="h3">
               Sign Up
             </Typography>
@@ -102,16 +102,17 @@ function SignUp(props) {
               type="password"
               variant="outlined"
               autoComplete="new-password"
-              error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-              helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+              error={
+                formik.touched.confirmPassword &&
+                Boolean(formik.errors.confirmPassword)
+              }
+              helperText={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
             />
           </Grid>
           <Grid className={classes.grid} item xs={10}>
-            {error ? (
-              <p className={classes.error}>
-                {error}
-              </p>
-            ) : null}
+            {error && <p className={classes.error}>{error}</p>}
             <Button
               color="secondary"
               fullWidth
@@ -132,4 +133,4 @@ function SignUp(props) {
   );
 }
 
-export default withStyles(styles)(SignUp)
+export default withStyles(styles)(SignUp);

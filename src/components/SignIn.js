@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import firebase from '../firebase'
-import { useFormik } from 'formik'
-import validationLoginSchema from './validation/validationLoginSchema'
+import React, { useState } from "react";
+import firebase from "../firebase";
+import { useFormik } from "formik";
+import validationLoginSchema from "./validation/validationLoginSchema";
 
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
-import { withStyles } from '@material-ui/styles'
-import styles from './styles/authStyles'
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/styles";
+import styles from "./styles/authStyles";
 
 function SignIn(props) {
   const [error, setError] = useState(null);
@@ -18,8 +18,8 @@ function SignIn(props) {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: validationLoginSchema,
     onSubmit: (values, { resetForm }) => {
@@ -27,8 +27,8 @@ function SignIn(props) {
         .login(values.email, values.password)
         .then(setError(null), setLoading(true))
         .catch((err) => {
-          setLoading(false)
-          setError('Email or Password Invalid');
+          setLoading(false);
+          setError("Email or Password Invalid");
         });
     },
   });
@@ -74,11 +74,7 @@ function SignIn(props) {
             />
           </Grid>
           <Grid className={classes.grid} item xs={10}>
-            {error ? (
-              <p className={classes.error}>
-                {error}
-              </p>
-            ) : null}
+            {error && <p className={classes.error}>{error}</p>}
             <Button
               disabled={loading}
               color="secondary"
@@ -100,4 +96,4 @@ function SignIn(props) {
   );
 }
 
-export default withStyles(styles)(SignIn)
+export default withStyles(styles)(SignIn);
